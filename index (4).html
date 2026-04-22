@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Bot Panel Membership - MoODyMadz</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: #0a2342;
+            color: white;
+            min-height: 100vh;
+            padding: 10px;
+        }
+        .header {
+            background: linear-gradient(135deg, #fdb813 0%, #0056b3 100%);
+            text-align: center;
+            padding: 15px;
+            color: black;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+        .header h1 {
+            font-size: clamp(24px, 6vw, 36px);
+            font-weight: 900;
+            font-style: italic;
+            font-family: 'Brush Script MT', cursive;
+        }
+        .search-area {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .search-btn {
+            background: #0056b3;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            font-size: 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            max-width: 300px;
+        }
+
+        /* 🔥 NOTIFICATION BAR 🔥 */
+        .notification-bar {
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            font-size: clamp(14px, 4vw, 16px);
+            margin-bottom: 15px;
+            border-radius: 8px;
+            display: none;
+            white-space: pre-line;
+            word-wrap: break-word;
+        }
+        .alert-expired {
+            background-color: #ff4444;
+            color: white;
+            border: 2px solid #cc0000;
+            display: block;
+        }
+        .alert-soon {
+            background-color: #ffbb33;
+            color: black;
+            border: 2px solid #ff8800;
+            display: block;
+        }
+        .alert-none {
+            background-color: #00C851;
+            color: white;
+            border: 2px solid #007E33;
+            display: block;
+        }
+
+        .container {
+            background: #103464;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+        .title {
+            text-align: center;
+            font-size: clamp(20px, 5vw, 22px);
+            font-weight: bold;
+            color: #fdb813;
+            margin-bottom: 15px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 10px;
+            min-width: 300px;
+        }
+        table, th, td {
+            border: 2px solid #0056b3;
+        }
+        th, td {
+            padding: 8px 5px;
+            text-align: center;
+            font-size: clamp(11px, 3vw, 14px);
+            word-break: break-word;
+        }
+        th {
+            background: #0a2342;
+            color: #fdb813;
+        }
+        tr:nth-child(even) {
+            background: rgba(255,255,255,0.05);
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            background: #0a2342;
+            border: 1px solid #0056b3;
+            color: white;
+            border-radius: 5px;
+            text-align: center;
+            font-size: clamp(12px, 3vw, 13px);
+        }
+        .action-btn {
+            background: #fdb813;
+            color: black;
+            padding: 6px 10px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            font-size: clamp(11px, 3vw, 13px);
+        }
+        .action-btn:hover {
+            background: #0056b3;
+            color: white;
+        }
+        .delete-btn {
+            background: #ff4444;
+            color: white;
+        }
+        .delete-btn:hover {
+            background: #cc0000;
+        }
+        .status-active {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        .status-soon {
+            color: #ffbb33;
+            font-weight: bold;
+        }
+        .status-expired {
+            color: #ff4444;
+            font-weight: bold;
+        }
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0,0,0,0.8);
+            padding-top: 80px;
+        }
+        .modal-content {
+            background-color: #103464;
+            margin: auto;
+            padding: 20px;
+            border: 3px solid #fdb813;
+            width: 85%;
+            max-width: 400px;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+        }
+        .modal-content h2 {
+            color: #fdb813;
+            margin-bottom: 20px;
+            font-size: clamp(18px, 5vw, 22px);
+        }
+        .option-btn {
+            display: block;
+            width: 90%;
+            padding: 15px;
+            margin: 10px auto;
+            background: #fdb813;
+            color: black;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 8px;
+            font-size: clamp(14px, 4vw, 16px);
+            border: none;
+            cursor: pointer;
+        }
+        .option-btn:hover {
+            background: #0056b3;
+            color: white;
+        }
+        .close {
+            color: #aaa;
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #fdb813;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        /* 🔐 LOGIN SCREEN STYLE */
+        #loginScreen {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #0a2342;
+            padding-top: 15%;
+        }
+        .login-box {
+            width: 90%;
+            max-width: 400px;
+            margin: auto;
+            padding: 30px;
+            background: #103464;
+            border-radius: 15px;
+            border: 3px solid #fdb813;
+            text-align: center;
+        }
+        .login-box h2 {
+            color: #fdb813;
+            margin-bottom: 25px;
+        }
+        .login-box input {
+            margin-bottom: 15px;
+            height: 45px;
+            font-size: 16px;
+        }
+
+        /* HIDE BUTTONS KAPAG VIEWER LANG */
+        .admin-only {
+            display: none;
+        }
+        
+        /* ADMIN BUTTON SA TAAS */
+        #adminToggleBtn {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: #222;
+            color: #fdb813;
+            border: 1px solid #fdb813;
+            padding: 5px 10px;
+            font-size: 12px;
+            border-radius: 5px;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 🔘 SMALL BUTTON SA TAAS -->
+    <button id="adminToggleBtn" onclick="openLogin()">🔐 ADMIN</button>
+
+    <!-- 🔐 LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div class="login-box">
+            <h2>🔒 ADMIN LOGIN</h2>
+            <input type="password" id="adminPass" placeholder="Enter Password">
+            <button class="action-btn" onclick="checkLogin()" style="width:100%; padding:12px; font-size:18px;">LOGIN</button>
+            <p id="wrongPass" style="color:red; margin-top:10px; display:none;">❌ Wrong Password!</p>
+            <br>
+            <button class="option-btn" onclick="closeLogin()" style="background:#555;">BACK TO VIEW</button>
+        </div>
+    </div>
+
+    <!-- MAIN WEBSITE -->
+    <div id="mainContent">
+        <div class="header">
+            <h1>🤖 BOT PANEL MEMBERSHIP 🤖</h1>
+        </div>
+
+        <div class="search-area">
+            <button type="button" class="search-btn" onclick="searchMember()">🔍 SEARCH</button>
+        </div>
+
+        <div id="notificationBar" class="notification-bar"></div>
+
+        <!-- MEMBER LIST -->
+        <div class="container">
+            <div class="title">📋 ALL MEMBERS LIST</div>
+            <table id="memberTable">
+                <thead>
+                    <tr>
+                        <th>OWNER</th>
+                        <th>DATE OF EXPIRATION</th>
+                        <th>STATUS</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody"></tbody>
+            </table>
+        </div>
+
+    </div>
+
+<script>
+    // 🔐 ADMIN PASSWORD
+    const PASSWORD = "moodymadz180129";
+
+    // ==============================================
+    // 📝 DITO MO ILALAGAY LAHAT NG NAMES AT DATE
+    // ==============================================
+    // Format: { ign: "NAME", expiry: "YYYY-MM-DD" }
+    // Pwede ka magdagdag dito ng marami
+    let membersData = [
+        { ign: "Shp bank", owner: "Owner1", expiry: "2026-05-13" },
+        { ign: "Doogy q", owner: "Owner2", expiry: "2026-09-02" },
+        { ign: "MoodyMadz", owner: "Admin", expiry: "2026-12-31" }
+    ];
+
+    let selectedIndex = -1;
+    let isAdminLoggedIn = false;
+
+    // 🔐 LOGIN FUNCTIONS
+    function openLogin() {
+        document.getElementById('loginScreen').style.display = 'block';
+    }
+    function closeLogin() {
+        document.getElementById('loginScreen').style.display = 'none';
+    }
+
+    function checkLogin() {
+        var pass = document.getElementById('adminPass').value;
+        if(pass == PASSWORD) {
+            isAdminLoggedIn = true;
+            closeLogin();
+            location.reload();
+        } else {
+            document.getElementById('wrongPass').style.display = 'block';
+        }
+    }
+
+    // 🔥 FORMAT DATE 🔥
+    function formatDate(dateObj) {
+        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+        let day = dateObj.getDate();
+        let month = months[dateObj.getMonth()];
+        let year = dateObj.getFullYear();
+        return day + " " + month + " " + year;
+    }
+
+    // 🔥 CHECK STATUS 🔥
+    function getStatus(expiryDateString) {
+        var expDate = new Date(expiryDateString);
+        var today = new Date();
+        expDate.setHours(0,0,0,0);
+        today.setHours(0,0,0,0);
+        var diffMs = expDate - today;
+        var diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+        if (diffDays <= 0) {
+            return "<span class='status-expired'>❌ EXPIRED</span>";
+        } else if (diffDays <= 5) {
+            return "<span class='status-soon'>⚠️ EXPIRE SOON (" + diffDays + " DAYS LEFT)</span>";
+        } else {
+            return "<span class='status-active'>✅ ACTIVE</span>";
+        }
+    }
+
+    // 🔥 CHECK NOTIFICATIONS 🔥
+    function checkNotifications() {
+        var today = new Date();
+        today.setHours(0,0,0,0);
+        var notifyBar = document.getElementById("notificationBar");
+        
+        let expiredList = [];
+        let soonList = [];
+
+        membersData.forEach(member => {
+            var expDate = new Date(member.expiry);
+            expDate.setHours(0,0,0,0);
+            var diffMs = expDate - today;
+            var diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+            if (diffDays <= 0) expiredList.push(member.ign);
+            else if (diffDays <= 5) soonList.push({ name: member.ign, days: diffDays });
+        });
+
+        let message = "";
+        let className = "";
+
+        if (expiredList.length > 0 && soonList.length > 0) {
+            className = "alert-expired";
+            message = "🔴 EXPIRED:\n" + expiredList.join(", ") + "\n\n🟠 WARNING:\n";
+            soonList.forEach(item => message += "⚠️ " + item.name + " - " + item.days + " DAYS LEFT!\n");
+        } else if (expiredList.length > 0) {
+            className = "alert-expired";
+            message = "🔴 EXPIRED:\n" + expiredList.join(", ");
+        } else if (soonList.length > 0) {
+            className = "alert-soon";
+            message = "🟠 WARNING:\n";
+            soonList.forEach(item => message += "⚠️ " + item.name + " - " + item.days + " DAYS LEFT!\n");
+        } else {
+            className = "alert-none";
+            message = "🟢 All accounts are Active!";
+        }
+
+        notifyBar.className = "notification-bar " + className;
+        notifyBar.innerHTML = message;
+    }
+
+    // 🔥 DISPLAY MEMBERS 🔥
+    function displayMembers() {
+        var tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = "";
+
+        membersData.forEach((member, index) => {
+            var row = tableBody.insertRow();
+            row.insertCell(0).innerHTML = member.ign;
+            row.insertCell(1).innerHTML = formatDate(new Date(member.expiry));
+            row.insertCell(2).innerHTML = getStatus(member.expiry);
+        });
+    }
+
+    // 🔥 SEARCH FUNCTION 🔥
+    function searchMember() {
+        var searchText = prompt("Enter IGN to search:");
+        if(searchText) {
+            var found = membersData.find(m => m.ign.toLowerCase() == searchText.toLowerCase());
+            if(found) {
+                alert("📝 Member Found:\n\nIGN: " + found.ign + "\nOwner: " + found.owner + "\nExpiry: " + formatDate(new Date(found.expiry)));
+            } else {
+                alert("❌ Not found!");
+            }
+        }
+    }
+
+    // 🔥 START UP 🔥
+    window.onload = function() {
+        displayMembers();
+        checkNotifications();
+    }
+</script>
+
+</body>
+</html>
