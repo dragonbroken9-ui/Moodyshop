@@ -1,0 +1,117 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoODyMadz PRO Shop</title><style>
+body{margin:0;font-family:Arial;background:linear-gradient(135deg,#050510,#1a0033);color:white}
+header{text-align:center;padding:20px;font-size:26px;background:linear-gradient(90deg,#ff00cc,#00ccff)}
+nav{display:flex;justify-content:center;flex-wrap:wrap;background:#111}
+nav button{background:none;border:none;color:white;padding:12px;cursor:pointer}
+nav button:hover{background:#6a00ff}
+.page{display:none;padding:20px;text-align:center}
+.active{display:block;animation:fade .4s}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.card{background:#1c1c2e;padding:20px;margin:15px auto;border-radius:12px;max-width:500px}
+.price{color:#00ff9d;font-weight:bold}
+.btn{padding:12px 20px;background:#25d366;border-radius:8px;cursor:pointer;display:inline-block;margin-top:10px;color:black}
+input,select{padding:10px;width:80%;border:none;border-radius:6px}
+.summary{margin-top:10px;color:#00c3ff}
+.receipt{background:#000;padding:10px;margin-top:10px;border-radius:8px}
+</style></head><body>
+<header>🔥 MoODyMadz SHOP 🔥</header><nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('order')">Order</button>
+<button onclick="show('admin')">Admin</button>
+</nav><div id="home" class="page active">
+<div class="card">🔥 WELCOME TO MoODyMadz 🔥
+100% Legit • Fast Delivery <br>• Trusted Re-Seller<br>
+<br>Play Smarter. Buy Faster. Win Bigger.<br>⚡ Fast • Safe • Trusted<br> <br>🚚 Delivery Ready<br>     We probide reliable and affordable <br> In-game service with smooth transactions.
+     <br> <br>Trusted by players - built for speed, safety, and satisfaction. </div>
+</div><div id="order" class="page">
+<div class="card">
+<h3>Smart Order</h3><select id="product" onchange="update()">
+<option value="gems">Gems</option>
+<option value="rss1">RSS KD 1-1800</option>
+<option value="rss2">RSS KD 1801+</option>
+<option value="bot">Bot Bank</option>
+</select><br><br><select id="option" onchange="calc()"></select><br><br>
+
+<input type="number" id="qty" value="1" oninput="calc()"><br>
+
+<div class="summary" id="total">Total: ₱0</div><div class="receipt" id="receipt">No order yet</div><div class="btn" onclick="saveOrder()">Save Order</div>
+<div class="btn" onclick="sendOrder()">Send via WhatsApp</div>
+</div>
+</div><div id="admin" class="page">
+<div class="card">
+<h3>Order List</h3>
+<div id="orders"></div>
+<div class="btn" onclick="clearOrders()">Clear All</div>
+</div>
+</div><script>
+function show(p){document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));document.getElementById(p).classList.add('active');if(p==='admin')loadOrders();}
+
+const data={
+ gems:[{name:'0-1B',price:330},{name:'1-1.5B',price:350},{name:'1.5-2B',price:380},{name:'2-4B',price:400}],
+ rss1:[{name:'1B set',price:100},{name:'2B set',price:120},{name:'3B set',price:160}
+    ,{name:'4B set',price:180}
+    ,{name: '4B set no food' ,price: 160}
+ ],
+ rss2:[{name:'1B set',price:120},{name:'2B set',price:140},{name:'3B set',price:210}
+    ,{name: '4b set',price:220}
+    ,{name:'4b set no food',price:210}
+ ],
+ bot:[{name:'1 Month',price:150},{name: '3 Month' ,price:435},{name:'5+1 Promo',price:750}]
+};
+
+function update(){
+ let p=product.value;
+ option.innerHTML='';
+ data[p].forEach((x,i)=>{
+  let o=document.createElement('option');
+  o.value=i;
+  o.text=x.name+' - ₱'+x.price;
+  option.appendChild(o);
+ });
+ calc();
+}
+
+function calc(){
+ let p=product.value;
+ let i=option.value;
+ let q=qty.value;
+ let item=data[p][i];
+ let total=item.price*q;
+ document.getElementById('total').innerText='Total: ₱'+total;
+ document.getElementById('receipt').innerText=`Item: ${item.name}\nQty: ${q}\nTotal: ₱${total}`;
+}
+
+function saveOrder(){
+ let text=document.getElementById('receipt').innerText;
+ let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+ orders.push(text);
+ localStorage.setItem('orders',JSON.stringify(orders));
+ alert('Order saved!');
+}
+
+function loadOrders(){
+ let list=document.getElementById('orders');
+ let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+ list.innerHTML='';
+ orders.forEach(o=>{
+  let div=document.createElement('div');
+  div.className='receipt';
+  div.innerText=o;
+  list.appendChild(div);
+ });
+}
+
+function clearOrders(){localStorage.removeItem('orders');loadOrders();}
+
+function sendOrder(){
+ let msg=document.getElementById('receipt').innerText;
+ window.open('https://wa.me/639279322948?text='+encodeURIComponent(msg));
+}
+
+update();
+</script></body>
+</html>
