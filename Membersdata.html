@@ -508,7 +508,7 @@
         var expirySave = dateStart.toISOString().split('T')[0];
 
         membersData.push({ ign: ign, owner: owner, expiry: expirySave, status: "ACTIVE" });
-        localStorage.setItem('botMembers', JSON.stringify(newData));
+        localStorage.setItem('botMembers', JSON.stringify(membersData));
      alert("✅ Data Updated!");
      location.reload();
         
