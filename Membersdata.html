@@ -348,16 +348,16 @@
             <h2>MEMBER OPTIONS</h2>
             <p id="modal-ign">IGN: Name</p>
             <br>
-            <button type="button" class="option-btn" onclick="extendSelected(30)">📅 1 MONTH - 30 DAYS</button>
-            <button type="button" class="option-btn" onclick="extendSelected(180)">📅 6 MONTHS - 180 DAYS</button>
+            <!-- NILITIS KO NA TO, 1 AT 6 MONTHS NA -->
+            <button type="button" class="option-btn" onclick="extendSelected(1)">📅 1 MONTH</button>
+            <button type="button" class="option-btn" onclick="extendSelected(6)">📅 6 MONTHS</button>
             <hr style="border:1px dashed #fdb813; margin:20px 0;">
             <button type="button" class="option-btn delete-btn" onclick="deleteSelected()">🗑️ DELETE</button>
         </div>
     </div>
-
 <script>
     // 🔐 ADMIN PASSWORD
-    const PASSWORD = "moodymadz180129"; // PALITAN MO TO
+    const PASSWORD = "moodymadz180129"; 
 
     // INITIALIZE
     if(!localStorage.getItem('botMembers')) {
@@ -504,14 +504,11 @@
         }
 
         var dateStart = new Date(dateStartStr);
-        dateStart.setDate(dateStart.getDate() + 30);
+        dateStart.setMonth(dateStart.getMonth() + 1); // AUTO 1 MONTH
         var expirySave = dateStart.toISOString().split('T')[0];
 
         membersData.push({ ign: ign, owner: owner, expiry: expirySave, status: "ACTIVE" });
         localStorage.setItem('botMembers', JSON.stringify(membersData));
-     alert("✅ Data Updated!");
-     location.reload();
-        
         displayMembers();
         checkNotifications();
         document.getElementById("newIGN").value = "";
@@ -539,11 +536,15 @@
         selectedIndex = -1;
     }
 
-    function extendSelected(days) {
+    // 🔥 EXTEND FUNCTION - NAKA MONTH NA ITO 🔥
+    function extendSelected(months) {
         if(selectedIndex === -1) return;
         var member = membersData[selectedIndex];
         var newDate = new Date(member.expiry);
-        newDate.setDate(newDate.getDate() + days);
+        
+        // MAG A-ADJUST NA ITO AUTOMATIC KAHIT FEB 28/29
+        newDate.setMonth(newDate.getMonth() + months);
+        
         member.expiry = newDate.toISOString().split('T')[0];
         
         localStorage.setItem('botMembers', JSON.stringify(membersData));
@@ -598,5 +599,4 @@
 </script>
 
 </body>
-  </html>
-  
+</html>
