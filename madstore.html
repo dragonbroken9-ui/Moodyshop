@@ -3,17 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MoODyMadz Gift Shop</title>
+<title>『 ＭＯＯＤＹＭＡＤＺ 』</title>
 
 <style>
 body{
   margin:0;
-  font-family:Arial;
-  /* 🔴🔵 HACKER BACKGROUND NASAAN NA! */
+  font-family: 'Segoe UI', Arial;
+  
+  /* ✅ ORIGINAL BACKGROUND MO NANDITO PA RIN! */
   background: url('https://img.freepik.com/free-photo/cyber-security-expert-working-with-technology-neon-lights_23-2151645599.jpg') no-repeat center center fixed;
   background-size: cover;
   color:white;
   position: relative;
+  overflow-x: hidden;
 }
 
 body::before {
@@ -23,60 +25,101 @@ body::before {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.75);
+  background: rgba(0, 0, 0, 0.85);
   z-index: -1;
+}
+
+/* ✨ NEW: Scanning Line Effect */
+body::after {
+  content: "";
+  position: fixed;
+  top: -100%;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    to bottom,
+    rgba(0,255,255,0) 0%,
+    rgba(0,255,255,0.15) 50%,
+    rgba(0,255,255,0) 100%
+  );
+  animation: scan 4s linear infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes scan {
+  0% { top: -100%; }
+  100% { top: 100%; }
 }
 
 header{
   text-align:center;
   padding:15px;
-  font-size:24px;
-  background:#111;
+  font-size:28px;
+  background:rgba(0,0,0,0.8);
+  border-bottom: 2px solid #6a00ff;
+  letter-spacing: 5px;
+  position: sticky;
+  top:0;
+  z-index: 99;
+  font-family: 'Courier New', monospace;
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #ff00ff;
 }
 
 nav{
   display:flex;
   justify-content:center;
   flex-wrap:wrap;
-  background:#000;
+  background:rgba(0,0,0,0.7);
+  padding:8px;
 }
 
 nav button{
   background:none;
   border:none;
   color:white;
-  padding:12px;
+  padding:12px 20px;
   cursor:pointer;
+  font-size:16px;
+  border-radius:5px;
+  transition: all 0.3s;
 }
 
 nav button:hover{
   background:#6a00ff;
+  box-shadow: 0 0 15px #6a00ff;
+  transform: translateY(-2px);
 }
 
 .banner{
   text-align:center;
-  padding:40px 20px;
-  background: transparent;
+  padding:50px 20px;
+  animation: fadeIn 1s ease-out;
 }
 
 .title{
-  font-size:28px;
+  font-size:40px;
   font-weight:bold;
-  color: mediumpurple;
-  animation:glow 2s infinite alternate;
+  color: #fff;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 8px;
+  text-shadow: 0 0 15px #ff006e, 0 0 30px #8338ec, 0 0 45px #3a86ff;
+  animation:glow 1.5s infinite alternate;
 }
 
 @keyframes glow{
-  from{text-shadow:0 0 10px #fff;}
-  to{text-shadow:0 0 25px #00ffff;}
+  from{text-shadow: 0 0 10px #ff006e, 0 0 20px #8338ec;}
+  to{text-shadow: 0 0 25px #ff006e, 0 0 40px #3a86ff, 0 0 55px #00ffff;}
 }
 
 .typing{
-  margin-top:15px;
-  font-size:18px;
-  border-right:2px solid white;
+  margin-top:20px;
+  font-size:20px;
+  border-right:3px solid #00ffff;
   display:inline-block;
   padding-right:5px;
+  color: #00ff9d;
 }
 
 .page{
@@ -87,59 +130,85 @@ nav button:hover{
 
 .active{
   display:block;
-  animation:fade .5s;
+  animation:fade 0.5s ease-in;
 }
 
 @keyframes fade{
-  from{opacity:0;}
-  to{opacity:1;}
+  from{opacity:0; transform: translateY(20px);}
+  to{opacity:1; transform: translateY(0);}
 }
 
 .card{
-  background:#1c1c2e;
-  padding:20px;
+  background: rgba(28, 28, 46, 0.9);
+  padding:25px;
   margin:15px auto;
-  border-radius:12px;
-  max-width:500px;
-  box-shadow:0 0 15px rgba(0,0,0,0.5);
+  border-radius:15px;
+  max-width:700px;
+  box-shadow:0 0 25px rgba(106, 0, 255, 0.3);
+  border: 1px solid rgba(106, 0, 255, 0.2);
+  transition: transform 0.3s;
+  text-align: left;
 }
 
-.price{color:#00ff9d;font-weight:bold}
+.card:hover {
+  transform: scale(1.02);
+}
+
+.price{color:#00ff9d;font-weight:bold; font-size:18px;}
 
 .btn{
-  padding:12px 20px;
-  background:#25d366;
+  padding:12px 25px;
+  background:linear-gradient(45deg, #25d366, #128c7e);
   border-radius:8px;
   cursor:pointer;
   display:inline-block;
-  margin-top:10px;
-  color:black;
+  margin-top:15px;
+  color:black !important;
+  font-weight:bold;
+  transition: all 0.3s;
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
+.btn:hover{
+  transform: scale(1.05);
+  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.5);
 }
 
 .btn-checkout{
-  background:#ffcc00;
-  color:black !important;
-  font-weight:bold;
+  background:linear-gradient(45deg, #ffcc00, #ff8800) !important;
 }
 
 select,input{
-  padding:10px;
-  width:80%;
-  border:none;
-  border-radius:6px;
-  margin-top:5px;
+  padding:12px;
+  width:90%;
+  background: #2a2a4a;
+  color:white;
+  border:1px solid #6a00ff;
+  border-radius:8px;
+  margin-top:10px;
+  font-size:15px;
+}
+
+select:focus, input:focus{
+  outline: none;
+  box-shadow: 0 0 10px #6a00ff;
 }
 
 .summary{
-  margin-top:10px;
+  margin-top:15px;
   color:#00c3ff;
+  font-size:20px;
+  font-weight:bold;
 }
 
 .receipt{
-  background:#000;
-  padding:10px;
-  margin-top:10px;
+  background:#0a0a1a;
+  padding:15px;
+  margin-top:15px;
   border-radius:8px;
+  text-align:left;
+  border-left: 4px solid #00ff9d;
+  white-space: pre-line;
 }
 
 .grand-total{
@@ -147,98 +216,237 @@ select,input{
   padding:15px;
   margin-top:15px;
   border-radius:8px;
-  font-size:20px;
+  font-size:22px;
   font-weight:bold;
   color:#ffcc00;
   border:2px solid #ffcc00;
+  text-shadow: 0 0 10px #ffcc00;
 }
 
 .account-fields{
-  background:#222;
+  background:rgba(34, 34, 34, 0.6);
   padding:15px;
   margin-top:15px;
   border-radius:8px;
-  border:1px solid #555;
+  border:1px dashed #ff4444;
   display:none;
 }
 
 .account-fields input{
   width:90%;
-  background:#333;
+  background:#111;
   color:white;
   border:1px solid #555;
+}
+
+/* NEW: Badge Style */
+.badge {
+  display: inline-block;
+  background: #6a00ff;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  margin-bottom: 10px;
+}
+
+/* ✨ NEW: Online Status Indicator */
+.status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+  color: #00ff9d;
+}
+.status-dot {
+  width: 12px;
+  height: 12px;
+  background: #00ff9d;
+  border-radius: 50%;
+  animation: pulse 1.5s infinite;
+}
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0.7); }
+  70% { box-shadow: 0 0 0 10px rgba(0, 255, 157, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(0, 255, 157, 0); }
+}
+
+/* ✨ NEW: About Section Styles */
+.section-title {
+  color: #00ffff;
+  font-size: 22px;
+  border-bottom: 1px solid #444;
+  padding-bottom: 8px;
+  margin-bottom: 15px;
+}
+.lang-en {
+  color: #ddd;
+  margin-bottom: 15px;
+  line-height: 1.6;
+}
+.lang-tg {
+  color: #ffcc00;
+  line-height: 1.6;
+  padding: 10px;
+  background: rgba(255, 204, 0, 0.1);
+  border-radius: 8px;
+}
+.note {
+  background: rgba(255, 68, 68, 0.15);
+  border-left: 4px solid #ff4444;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+.good {
+  background: rgba(0, 255, 157, 0.15);
+  border-left: 4px solid #00ff9d;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+}
+a {
+  color: #00ffff;
+  text-decoration: none;
+  font-weight: bold;
+}
+a:hover {
+  text-shadow: 0 0 10px #00ffff;
 }
 </style>
 </head>
 
 <body>
 
-<header>🔥 MoODyMadz Gift Shop 🔥</header>
+<header> ＭＯＯＤＹＭＡＤＺ <br> 🏪SHOP🏪</header>
 
 <nav>
-<button onclick="show('home')">Home</button>
-<button onclick="show('order')">Order</button>
-<button onclick="show('admin')">Admin</button>
+<button onclick="show('home')">🏠 Home</button>
+<button onclick="show('order')">🛒 Order</button>
+<button onclick="show('about')">📜 About</button> <!-- NEW ABOUT BUTTON -->
+<button onclick="show('admin')">⚙️ Admin</button>
 </nav>
 
 <div class="banner">
-  <div class="title">🔥 Welcome🔥<br> to <br> 🔥MoODyMadz Store 🔥</div>
+  <div class="title"> ＭＯＯＤＹ<br>ＭＡＤＺ 
+  <br> SHOPPING Center</div>
   <div class="typing" id="typing"></div>
+  
+  <div class="status">
+    <div class="status-dot"></div>
+    <span>WE ARE ONLINE</span>
+  </div>
 </div>
 
 <!-- HOME -->
 <div id="home" class="page active">
-  <div class="card">
-    ⚡ Fast • Safe • Trusted<br>
-    🚚 Courier Delivery<br>
-    ✅ No Scam
+  <div class="card" style="text-align:center;">
+    <span class="badge">⚡ PREMIUM SELLER ⚡</span>
+    <h2>WHY CHOOSE US?</h2>
+    ✅ <b>100% LEGIT & SAFE</b><br><br>
+    ⚡ <b>INSTANT / FAST DELIVERY</b><br><br>
+    🚚 <b>GUILD & OPEN GUILD</b><br><br>
+    🔒 <b>SECURED TRANSACTION</b><br><br>
+    💬 <b>24/7 SUPPORT</b>
   </div>
 </div>
 
 <!-- ORDER -->
 <div id="order" class="page">
-  <div class="card">
-    <h3>Smart Order System</h3>
+  <div class="card" style="text-align:center;">
+    <h3>🛒 SMART ORDER SYSTEM</h3>
 
     <select id="product" onchange="update()">
-      <option value="gems">Gems</option>
-      <option value="rss1">RSS KD 1-1800</option>
-      <option value="rss2">RSS KD 1801+</option>
-      <option value="bot">Bot Bank</option>
-      <option value="NewKD">New KD Bot Bank</option>
-    </select><br><br>
+      <option value="gems">💎 Gems</option>
+      <option value="rss1">📦 RSS KD 1-1800</option>
+      <option value="rss2">📦 RSS KD 1801+</option>
+      <option value="bot">🤖 Bot Bank</option>
+      <option value="NewKD">🤖 New KD Bot Bank</option>
+    </select><br>
 
-    <select id="option" onchange="calc()"></select><br><br>
+    <select id="option" onchange="calc()"></select><br>
 
-    <input type="number" id="qty" value="1" oninput="calc()"><br>
+    <input type="number" id="qty" value="1" min="1" oninput="calc()"><br>
 
     <div id="accountFields" class="account-fields">
-      <strong>🔐 Account Details:</strong><br><br>
-      <input type="email" id="accEmail" placeholder="Enter IGG Email Address" oninput="calc()"><br><br>
+      <strong>🔐 ACCOUNT DETAILS (REQUIRED):</strong><br><br>
+      <input type="email" id="accEmail" placeholder="Enter IGG Email Address" oninput="calc()"><br>
       <input type="password" id="accPass" placeholder="Enter Password" oninput="calc()">
     </div>
 
     <div class="summary" id="total">Total: ₱0</div>
 
-    <div class="receipt" id="receipt">No order yet</div>
+    <div class="receipt" id="receipt">📝 No order yet...</div>
 
-    <div class="btn" onclick="saveOrder()">Save Order</div>
-    <div class="btn" onclick="sendOrder()">Send via WhatsApp</div>
+    <div class="btn" onclick="saveOrder()">💾 SAVE ORDER</div>
+    <div class="btn" onclick="sendOrder()">📱 SEND VIA WHATSAPP</div>
+  </div>
+</div>
+
+<!-- ABOUT PAGE -->
+<div id="about" class="page">
+  <div class="card">
+    <h2 class="section-title">📜 ABOUT OUR SERVICES</h2>
+
+    <!-- 💎 GEMS SECTION -->
+    <h3>💎 GEMS</h3>
+    <div class="lang-en">
+      For Gems, please join our <strong>Open Guild</strong> first. We also require a <strong>screenshot with your location visible</strong> for verification.
+      <div class="note">
+        ⚠️ <strong>Important Note:</strong> We cannot send gifts to <strong>New KD accounts</strong>. Also, the amount stated is the <strong>worth/value of gems</strong>, not the actual gems count.
+      </div>
+      🛒 <strong>How to order:</strong> Please visit our <strong>Gem Calculator</strong> first to choose your items 
+      👉 <a href="https://lordsgems.com/gem-calculator/" target="_blank">CLICK HERE TO OPEN CALCULATOR</a>.
+      <br>Don't forget to send a <strong>screenshot of your chosen items</strong> for smooth transaction.
+    </div>
+    <div class="lang-tg">
+      Para sa Gems, kailangan muna sumali sa ating <strong>Open Guild</strong> at magpadala ng <strong>screenshot na kita yung location</strong> para ma-verify.
+      <div class="note">
+        ⚠️ <strong>Paalala:</strong> Hindi po kami nakakapag-send o nakakapag-gift sa mga <strong>New KD accounts</strong>. At ang nakalagay na amount ay <strong>worth o value</strong> lang po, hindi po ito ang mismong bilang ng gems.
+      </div>
+      🛒 <strong>Paano umorder:</strong> Pumunta muna sa ating <strong>Gem Calculator</strong> para mamili ng items 
+      👉 <a href="https://lordsgems.com/gem-calculator/" target="_blank">CLICK HERE PARA MAGBUKAS</a>.
+      <br>Mag-send din po kayo ng <strong>screenshot ng napiling items</strong> para mabilis at smooth ang process.
+   
+    <!-- 📦 RSS SECTION -->
+    <h3>📦 RSS</h3>
+    <div class="lang-en">
+      For RSS, please join our <strong>Open Guild</strong> first. We also require a <strong>screenshot with your location visible</strong> for verification.
+      <div class="good">
+        ✅ <strong>Good News:</strong> We <strong>CAN process RSS orders even for New KD accounts</strong>.
+      </div>
+    </div>
+    <div class="lang-tg">
+      Para sa RSS, kailangan muna sumali sa ating <strong>Open Guild</strong> at magpadala ng <strong>screenshot na kita yung location</strong> para ma-verify.
+      <div class="good">
+        ✅ <strong>Good News:</strong> PWEDE po kaming mag-process ng RSS orders kahit sa <strong>New KD accounts</strong>.
+      </div>
+    </div>
+
+    <!-- 🤖 BOT BANK SECTION -->
+    <h3>🤖 BOT BANK / NEW KD</h3>
+    <div class="lang-en">
+      For Bot Bank services, we highly recommend creating a dedicated <strong>IGG Account</strong>. This ensures a <strong>safe and faster transaction</strong>. We need <strong>full access</strong> to the account during the process. The subscription is valid for <strong>one month</strong>, and you can renew it afterwards. For your security, you may <strong>change your password</strong> once the process is completed.
+    </div>
+    <div class="lang-tg">
+      Para sa Bot Bank, mainam na gumawa ng bagong <strong>IGG Account</strong> para <strong>safe at mabilis</strong> ang transaction. Kailangan po natin ng <strong>full access</strong> sa account habang ginagawa ang process. Ang validity po nito ay <strong>one month</strong> at pwede mag-renew. Pwede na po kayo mag <strong>change password</strong> pagkatapos gawin ang process para sa safety ng account niyo.
+    </div>
+
   </div>
 </div>
 
 <!-- ADMIN -->
 <div id="admin" class="page">
-  <div class="card">
-    <h3>Orders List</h3>
+  <div class="card" style="text-align:center;">
+    <h3>📋 ORDERS LIST</h3>
     <div id="orders"></div>
     
-    <div class="btn btn-checkout" onclick="checkout()">CHECKOUT</div>
-    <div class="btn" onclick="sendAllToWhatsApp()">📱 SEND TO WHATSAPP</div>
-    <div class="btn" onclick="clearOrders()">Clear All</div>
+    <div class="btn btn-checkout" onclick="checkout()">✅ CHECKOUT</div>
+    <div class="btn" onclick="sendAllToWhatsApp()">📤 SEND ALL TO WHATSAPP</div>
+    <div class="btn" onclick="clearOrders()">🗑️ CLEAR ALL</div>
     
     <div id="totalSummary" class="grand-total" style="display:none;">
-      Grand Total: ₱<span id="grandTotalAmount">0</span>
+      💰 GRAND TOTAL: ₱<span id="grandTotalAmount">0</span>
     </div>
   </div>
 </div>
@@ -252,10 +460,11 @@ function show(p){
 
 const data={
  gems:[
-  {name:'0-1B',price:330},
+  {name:'0-500m',price:300},
+  {name:'599.9M-1B',price:330},
   {name:'1-1.5B',price:350},
   {name:'1.5-2B',price:380},
-  {name:'2-4B',price:400}
+  {name:'2-4B',price:410}
  ],
  rss1:[
   {name:'1B set',price:100},
@@ -270,7 +479,7 @@ const data={
   {name:'2B set',price:140},
   {name:'3B set',price:210},
   {name:'4B set',price:220},
-  {name:'4B set no food orno gold',price:210}
+  {name:'4B set no food or no gold',price:210}
  ],
  bot:[
   {name:'1 Month',price:150},
@@ -281,8 +490,7 @@ const data={
     {name:'1 Month',price:220},
     {name:'3 Months',price:630},
     {name:'5+1 Promo',price:1100}
- ],
- 
+ ]
 };
 
 function update(){
@@ -312,43 +520,60 @@ function calc(){
  let q=qty.value;
  let item=data[p][i];
  let total=item.price*q;
- totalDisplay='Total: ₱'+total;
+ totalDisplay='Total: ₱'+total.toLocaleString();
  document.getElementById('total').innerText=totalDisplay;
 
- let receiptText = `Item: ${item.name}
-Qty: ${q}
-Total: ₱${total}`;
+ let receiptText = `🛒 ITEM: ${item.name}
+📦 QUANTITY: ${q}
+💰 PRICE: ₱${item.price}
+💸 TOTAL: ₱${total.toLocaleString()}`;
 
  if(p === 'bot' || p === 'NewKD'){
     let email = document.getElementById('accEmail').value || 'Not provided';
     let pass = document.getElementById('accPass').value || 'Not provided';
     
     receiptText += `
+
 ---------------------
-🔐 Account Details:
-Email: ${email}
-Password: ${pass}`;
+🔐 ACCOUNT DETAILS:
+📧 Email: ${email}
+🔑 Password: ${pass}`;
  }
 
  document.getElementById('receipt').innerText = receiptText;
 }
 
 function saveOrder(){
- let text=receipt.innerText;
- let orders=JSON.parse(localStorage.getItem('orders')||'[]');
- orders.push(text);
- localStorage.setItem('orders',JSON.stringify(orders));
- alert('✅ Order Saved!');
+    // ✅ VALIDATION PARA SA BOT
+    let p = product.value;
+    if(p === 'bot' || p === 'NewKD'){
+        let email = document.getElementById('accEmail').value.trim();
+        let pass = document.getElementById('accPass').value.trim();
+        
+        if(email === '' || pass === ''){
+            alert('⚠️ PLEASE ENTER EMAIL AND PASSWORD FIRST!\nRequired para sa Bot Bank / New KD');
+            return;
+        }
+    }
+
+    let text=receipt.innerText;
+    let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+    orders.push(text);
+    localStorage.setItem('orders',JSON.stringify(orders));
+    alert('✅ ORDER SAVED SUCCESSFULLY!');
 }
 
 function loadOrders(){
  let list=document.getElementById('orders');
  let orders=JSON.parse(localStorage.getItem('orders')||'[]');
  list.innerHTML='';
- orders.forEach(o=>{
+ if(orders.length === 0){
+    list.innerHTML = "<p style='color:gray;'>No orders yet...</p>";
+ }
+ orders.forEach((o, idx)=>{
   let div=document.createElement('div');
   div.className='receipt';
-  div.innerText=o;
+  div.innerHTML = "<b>--- ORDER #" + (idx+1) + " ---</b><br>" + o.replace(/\n/g, "<br>");
   list.appendChild(div);
  });
  
@@ -359,12 +584,24 @@ function clearOrders(){
  localStorage.removeItem('orders');
  loadOrders();
  document.getElementById('totalSummary').style.display = 'none';
- alert('🗑️ All Orders Cleared!');
+ alert('🗑️ ALL ORDERS CLEARED!');
 }
 
 function sendOrder(){
- let msg=receipt.innerText;
- window.open('https://wa.me/639279322948?text='+encodeURIComponent(msg));
+    // ✅ VALIDATION PARA SA BOT
+    let p = product.value;
+    if(p === 'bot' || p === 'NewKD'){
+        let email = document.getElementById('accEmail').value.trim();
+        let pass = document.getElementById('accPass').value.trim();
+        
+        if(email === '' || pass === ''){
+            alert('⚠️ PLEASE ENTER EMAIL AND PASSWORD FIRST!\nRequired para sa Bot Bank / New KD');
+            return;
+        }
+    }
+
+    let msg=receipt.innerText;
+    window.open('https://wa.me/639279322948?text='+encodeURIComponent(msg));
 }
 
 function checkout(){
@@ -373,10 +610,10 @@ function checkout(){
 
     orders.forEach(orderText => {
         let lines = orderText.split('\n');
-        let totalLine = lines.find(line => line.includes('Total: ₱'));
+        let totalLine = lines.find(line => line.includes('TOTAL: ₱'));
         
         if(totalLine){
-            let amount = parseFloat(totalLine.replace('Total: ₱',''));
+            let amount = parseFloat(totalLine.replace(/[^0-9.]/g,''));
             if(!isNaN(amount)){
                 grandTotal += amount;
             }
@@ -386,22 +623,22 @@ function checkout(){
     document.getElementById('grandTotalAmount').innerText = grandTotal.toLocaleString();
     document.getElementById('totalSummary').style.display = 'block';
     
-    alert(`✅ Checkout Complete!\nTotal Sales: ₱${grandTotal.toLocaleString()}`);
+    alert(`✅ CHECKOUT COMPLETE!\nTOTAL SALES: ₱${grandTotal.toLocaleString()}`);
 }
 
 function sendAllToWhatsApp(){
     let orders=JSON.parse(localStorage.getItem('orders')||'[]');
     let grandTotal = 0;
-    let message = "🔥 MoODyMadz Gift Shop 🔥\n\n📋 ORDER SUMMARY:\n\n";
+    let message = "🔥 ＭＯＯＤＹＭＡＤＺ 🔥\n\n📋 ORDER SUMMARY:\n\n";
 
     orders.forEach((orderText, index) => {
         message += `--- ORDER ${index + 1} ---\n`;
         message += orderText + "\n\n";
         
         let lines = orderText.split('\n');
-        let totalLine = lines.find(line => line.includes('Total: ₱'));
+        let totalLine = lines.find(line => line.includes('TOTAL: ₱'));
         if(totalLine){
-            let amount = parseFloat(totalLine.replace('Total: ₱',''));
+            let amount = parseFloat(totalLine.replace(/[^0-9.]/g,''));
             if(!isNaN(amount)){
                 grandTotal += amount;
             }
@@ -445,4 +682,5 @@ type();
 </script>
 
 </body>
-</html>
+      </html>
+  
