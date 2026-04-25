@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MoODyMadz Gift Shop</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  /* 🔴🔵 HACKER BACKGROUND NASAAN NA! */
+  background: url('https://img.freepik.com/free-photo/cyber-security-expert-working-with-technology-neon-lights_23-2151645599.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color:white;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: -1;
+}
+
+header{
+  text-align:center;
+  padding:15px;
+  font-size:24px;
+  background:#111;
+}
+
+nav{
+  display:flex;
+  justify-content:center;
+  flex-wrap:wrap;
+  background:#000;
+}
+
+nav button{
+  background:none;
+  border:none;
+  color:white;
+  padding:12px;
+  cursor:pointer;
+}
+
+nav button:hover{
+  background:#6a00ff;
+}
+
+.banner{
+  text-align:center;
+  padding:40px 20px;
+  background: transparent;
+}
+
+.title{
+  font-size:28px;
+  font-weight:bold;
+  color: mediumpurple;
+  animation:glow 2s infinite alternate;
+}
+
+@keyframes glow{
+  from{text-shadow:0 0 10px #fff;}
+  to{text-shadow:0 0 25px #00ffff;}
+}
+
+.typing{
+  margin-top:15px;
+  font-size:18px;
+  border-right:2px solid white;
+  display:inline-block;
+  padding-right:5px;
+}
+
+.page{
+  display:none;
+  padding:20px;
+  text-align:center;
+}
+
+.active{
+  display:block;
+  animation:fade .5s;
+}
+
+@keyframes fade{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+.card{
+  background:#1c1c2e;
+  padding:20px;
+  margin:15px auto;
+  border-radius:12px;
+  max-width:500px;
+  box-shadow:0 0 15px rgba(0,0,0,0.5);
+}
+
+.price{color:#00ff9d;font-weight:bold}
+
+.btn{
+  padding:12px 20px;
+  background:#25d366;
+  border-radius:8px;
+  cursor:pointer;
+  display:inline-block;
+  margin-top:10px;
+  color:black;
+}
+
+.btn-checkout{
+  background:#ffcc00;
+  color:black !important;
+  font-weight:bold;
+}
+
+select,input{
+  padding:10px;
+  width:80%;
+  border:none;
+  border-radius:6px;
+  margin-top:5px;
+}
+
+.summary{
+  margin-top:10px;
+  color:#00c3ff;
+}
+
+.receipt{
+  background:#000;
+  padding:10px;
+  margin-top:10px;
+  border-radius:8px;
+}
+
+.grand-total{
+  background:#111;
+  padding:15px;
+  margin-top:15px;
+  border-radius:8px;
+  font-size:20px;
+  font-weight:bold;
+  color:#ffcc00;
+  border:2px solid #ffcc00;
+}
+
+.account-fields{
+  background:#222;
+  padding:15px;
+  margin-top:15px;
+  border-radius:8px;
+  border:1px solid #555;
+  display:none;
+}
+
+.account-fields input{
+  width:90%;
+  background:#333;
+  color:white;
+  border:1px solid #555;
+}
+</style>
+</head>
+
+<body>
+
+<header>🔥 MoODyMadz Gift Shop 🔥</header>
+
+<nav>
+<button onclick="show('home')">Home</button>
+<button onclick="show('order')">Order</button>
+<button onclick="show('admin')">Admin</button>
+</nav>
+
+<div class="banner">
+  <div class="title">🔥 Welcome🔥<br> to <br> 🔥MoODyMadz Store 🔥</div>
+  <div class="typing" id="typing"></div>
+</div>
+
+<!-- HOME -->
+<div id="home" class="page active">
+  <div class="card">
+    ⚡ Fast • Safe • Trusted<br>
+    🚚 Courier Delivery<br>
+    ✅ No Scam
+  </div>
+</div>
+
+<!-- ORDER -->
+<div id="order" class="page">
+  <div class="card">
+    <h3>Smart Order System</h3>
+
+    <select id="product" onchange="update()">
+      <option value="gems">Gems</option>
+      <option value="rss1">RSS KD 1-1800</option>
+      <option value="rss2">RSS KD 1801+</option>
+      <option value="bot">Bot Bank</option>
+      <option value="NewKD">New KD Bot Bank</option>
+    </select><br><br>
+
+    <select id="option" onchange="calc()"></select><br><br>
+
+    <input type="number" id="qty" value="1" oninput="calc()"><br>
+
+    <div id="accountFields" class="account-fields">
+      <strong>🔐 Account Details:</strong><br><br>
+      <input type="email" id="accEmail" placeholder="Enter IGG Email Address" oninput="calc()"><br><br>
+      <input type="password" id="accPass" placeholder="Enter Password" oninput="calc()">
+    </div>
+
+    <div class="summary" id="total">Total: ₱0</div>
+
+    <div class="receipt" id="receipt">No order yet</div>
+
+    <div class="btn" onclick="saveOrder()">Save Order</div>
+    <div class="btn" onclick="sendOrder()">Send via WhatsApp</div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="admin" class="page">
+  <div class="card">
+    <h3>Orders List</h3>
+    <div id="orders"></div>
+    
+    <div class="btn btn-checkout" onclick="checkout()">CHECKOUT</div>
+    <div class="btn" onclick="sendAllToWhatsApp()">📱 SEND TO WHATSAPP</div>
+    <div class="btn" onclick="clearOrders()">Clear All</div>
+    
+    <div id="totalSummary" class="grand-total" style="display:none;">
+      Grand Total: ₱<span id="grandTotalAmount">0</span>
+    </div>
+  </div>
+</div>
+
+<script>
+function show(p){
+ document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+ document.getElementById(p).classList.add('active');
+ if(p==='admin') loadOrders();
+}
+
+const data={
+ gems:[
+  {name:'0-1B',price:330},
+  {name:'1-1.5B',price:350},
+  {name:'1.5-2B',price:380},
+  {name:'2-4B',price:400}
+ ],
+ rss1:[
+  {name:'1B set',price:100},
+  {name:'2B set',price:120},
+  {name:'3B set',price:160},
+  {name:'4B set',price:180},
+  {name:'4B set no food or no gold',price: 160}
+  
+ ],
+ rss2:[
+  {name:'1B set',price:120},
+  {name:'2B set',price:140},
+  {name:'3B set',price:210},
+  {name:'4B set',price:220},
+  {name:'4B set no food orno gold',price:210}
+ ],
+ bot:[
+  {name:'1 Month',price:150},
+  {name:'3 Months',price:435},
+  {name:'5+1 Promo',price:750}
+ ],
+ NewKD:[
+    {name:'1 Month',price:220},
+    {name:'3 Months',price:630},
+    {name:'5+1 Promo',price:1100}
+ ],
+ 
+};
+
+function update(){
+ let p=product.value;
+ option.innerHTML='';
+ data[p].forEach((x,i)=>{
+  let o=document.createElement('option');
+  o.value=i;
+  o.text=x.name+' - ₱'+x.price;
+  option.appendChild(o);
+ });
+ calc();
+
+ let fields = document.getElementById('accountFields');
+ if(p === 'bot' || p === 'NewKD'){
+    fields.style.display = 'block';
+ } else {
+    fields.style.display = 'none';
+    document.getElementById('accEmail').value = '';
+    document.getElementById('accPass').value = '';
+ }
+}
+
+function calc(){
+ let p=product.value;
+ let i=option.value;
+ let q=qty.value;
+ let item=data[p][i];
+ let total=item.price*q;
+ totalDisplay='Total: ₱'+total;
+ document.getElementById('total').innerText=totalDisplay;
+
+ let receiptText = `Item: ${item.name}
+Qty: ${q}
+Total: ₱${total}`;
+
+ if(p === 'bot' || p === 'NewKD'){
+    let email = document.getElementById('accEmail').value || 'Not provided';
+    let pass = document.getElementById('accPass').value || 'Not provided';
+    
+    receiptText += `
+---------------------
+🔐 Account Details:
+Email: ${email}
+Password: ${pass}`;
+ }
+
+ document.getElementById('receipt').innerText = receiptText;
+}
+
+function saveOrder(){
+ let text=receipt.innerText;
+ let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+ orders.push(text);
+ localStorage.setItem('orders',JSON.stringify(orders));
+ alert('✅ Order Saved!');
+}
+
+function loadOrders(){
+ let list=document.getElementById('orders');
+ let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+ list.innerHTML='';
+ orders.forEach(o=>{
+  let div=document.createElement('div');
+  div.className='receipt';
+  div.innerText=o;
+  list.appendChild(div);
+ });
+ 
+ document.getElementById('totalSummary').style.display = 'none';
+}
+
+function clearOrders(){
+ localStorage.removeItem('orders');
+ loadOrders();
+ document.getElementById('totalSummary').style.display = 'none';
+ alert('🗑️ All Orders Cleared!');
+}
+
+function sendOrder(){
+ let msg=receipt.innerText;
+ window.open('https://wa.me/639279322948?text='+encodeURIComponent(msg));
+}
+
+function checkout(){
+    let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+    let grandTotal = 0;
+
+    orders.forEach(orderText => {
+        let lines = orderText.split('\n');
+        let totalLine = lines.find(line => line.includes('Total: ₱'));
+        
+        if(totalLine){
+            let amount = parseFloat(totalLine.replace('Total: ₱',''));
+            if(!isNaN(amount)){
+                grandTotal += amount;
+            }
+        }
+    });
+
+    document.getElementById('grandTotalAmount').innerText = grandTotal.toLocaleString();
+    document.getElementById('totalSummary').style.display = 'block';
+    
+    alert(`✅ Checkout Complete!\nTotal Sales: ₱${grandTotal.toLocaleString()}`);
+}
+
+function sendAllToWhatsApp(){
+    let orders=JSON.parse(localStorage.getItem('orders')||'[]');
+    let grandTotal = 0;
+    let message = "🔥 MoODyMadz Gift Shop 🔥\n\n📋 ORDER SUMMARY:\n\n";
+
+    orders.forEach((orderText, index) => {
+        message += `--- ORDER ${index + 1} ---\n`;
+        message += orderText + "\n\n";
+        
+        let lines = orderText.split('\n');
+        let totalLine = lines.find(line => line.includes('Total: ₱'));
+        if(totalLine){
+            let amount = parseFloat(totalLine.replace('Total: ₱',''));
+            if(!isNaN(amount)){
+                grandTotal += amount;
+            }
+        }
+    });
+
+    message += `====================\n💰 TOTAL AMOUNT: ₱${grandTotal.toLocaleString()}\n====================`;
+
+    window.open('https://wa.me/639279322948?text='+encodeURIComponent(message));
+}
+
+/* TYPING ANIMATION */
+const texts=[
+ "💎 100% Legit • No Scam",
+ "⚡ Fast Delivery • Trusted Seller",
+ "🚚 Guild & Open Guild Available",
+ "🔥 Play Smarter. Buy Faster. Win Bigger"
+];
+
+let count=0,index=0,currentText='',letter='';
+
+function type(){
+ if(count===texts.length){count=0;}
+ currentText=texts[count];
+ letter=currentText.slice(0,++index);
+ document.getElementById('typing').textContent=letter;
+
+ if(letter.length===currentText.length){
+  setTimeout(()=>{
+    index=0;
+    count++;
+    setTimeout(type,300);
+  },1500);
+ } else {
+  setTimeout(type,50);
+ }
+}
+
+update();
+type();
+</script>
+
+</body>
+</html>
