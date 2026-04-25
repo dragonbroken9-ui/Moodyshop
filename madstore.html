@@ -11,7 +11,7 @@ body{
   font-family: 'Segoe UI', Arial;
   
   /* ✅ ORIGINAL BACKGROUND MO NANDITO PA RIN! */
-  background: url('https://img.freepik.com/free-photo/cyber-security-expert-working-with-technology-neon-lights_23-2151645599.jpg') no-repeat center center fixed;
+  background: url('https://img.freepik.com/free-photo/cyber-security-expert-working-technology-room_23-2151645599.jpg') no-repeat center center fixed;
   background-size: cover;
   color:white;
   position: relative;
@@ -318,18 +318,17 @@ a:hover {
 
 <body>
 
-<header> ＭＯＯＤＹＭＡＤＺ <br> 🏪SHOP🏪</header>
+<header> ＭＯＯＤＹＭＡＤＺ<br>🏪  STORE 🏪</header>
 
 <nav>
 <button onclick="show('home')">🏠 Home</button>
 <button onclick="show('order')">🛒 Order</button>
-<button onclick="show('about')">📜 About</button> <!-- NEW ABOUT BUTTON -->
+<button onclick="show('about')">📜 About</button>
 <button onclick="show('admin')">⚙️ Admin</button>
 </nav>
 
 <div class="banner">
-  <div class="title"> ＭＯＯＤＹ<br>ＭＡＤＺ 
-  <br> SHOPPING Center</div>
+  <div class="title"> ＭＯＯＤＹ<br>ＭＡＤＺ<br>Shopping Center</div>
   <div class="typing" id="typing"></div>
   
   <div class="status">
@@ -406,8 +405,9 @@ a:hover {
       </div>
       🛒 <strong>Paano umorder:</strong> Pumunta muna sa ating <strong>Gem Calculator</strong> para mamili ng items 
       👉 <a href="https://lordsgems.com/gem-calculator/" target="_blank">CLICK HERE PARA MAGBUKAS</a>.
-      <br>Mag-send din po kayo ng <strong>screenshot ng napiling items</strong> para mabilis at smooth ang process.
-   
+      <br>Mag-send din po kayo ng <strong>screenshot ng napiling items</strong> para m
+    </div>
+
     <!-- 📦 RSS SECTION -->
     <h3>📦 RSS</h3>
     <div class="lang-en">
@@ -460,11 +460,11 @@ function show(p){
 
 const data={
  gems:[
-  {name:'0-500m',price:300},
-  {name:'599.9M-1B',price:330},
+  {name:'0-500M', price:300},
+  {name:'599.1M-1B',price:330},
   {name:'1-1.5B',price:350},
   {name:'1.5-2B',price:380},
-  {name:'2-4B',price:410}
+  {name:'2-3B',price:410},
  ],
  rss1:[
   {name:'1B set',price:100},
@@ -543,8 +543,23 @@ function calc(){
  document.getElementById('receipt').innerText = receiptText;
 }
 
+// ✅ FUNCTION PARA SA REMINDER
+function showReminder(){
+    let p = product.value;
+    let message = "";
+
+    if(p === 'gems' || p === 'rss1' || p === 'rss2'){
+        message = "⚠️ REMINDER:\n\nPlease don't forget to send a SCREENSHOT of your items and location before we proceed. Thank you!";
+    } 
+    else if(p === 'bot' || p === 'NewKD'){
+        message = "⚠️ REMINDER:\n\nPlease make sure you provided the correct Email and Password. We need full access during transaction. You can change your password after the process.";
+    }
+
+    alert(message);
+}
+
 function saveOrder(){
-    // ✅ VALIDATION PARA SA BOT
+    // ✅ CHECK BOT
     let p = product.value;
     if(p === 'bot' || p === 'NewKD'){
         let email = document.getElementById('accEmail').value.trim();
@@ -555,6 +570,9 @@ function saveOrder(){
             return;
         }
     }
+
+    // ✅ SHOW REMINDER
+    showReminder();
 
     let text=receipt.innerText;
     let orders=JSON.parse(localStorage.getItem('orders')||'[]');
@@ -588,7 +606,7 @@ function clearOrders(){
 }
 
 function sendOrder(){
-    // ✅ VALIDATION PARA SA BOT
+    // ✅ CHECK BOT
     let p = product.value;
     if(p === 'bot' || p === 'NewKD'){
         let email = document.getElementById('accEmail').value.trim();
@@ -599,6 +617,9 @@ function sendOrder(){
             return;
         }
     }
+
+    // ✅ SHOW REMINDER
+    showReminder();
 
     let msg=receipt.innerText;
     window.open('https://wa.me/639279322948?text='+encodeURIComponent(msg));
@@ -629,7 +650,7 @@ function checkout(){
 function sendAllToWhatsApp(){
     let orders=JSON.parse(localStorage.getItem('orders')||'[]');
     let grandTotal = 0;
-    let message = "🔥 ＭＯＯＤＹＭＡＤＺ 🔥\n\n📋 ORDER SUMMARY:\n\n";
+    let message = "🔥『 ＭＯＯＤＹＭＡＤＺ 』🔥\n\n📋 ORDER SUMMARY:\n\n";
 
     orders.forEach((orderText, index) => {
         message += `--- ORDER ${index + 1} ---\n`;
@@ -682,5 +703,5 @@ type();
 </script>
 
 </body>
-      </html>
-  
+  </html>
+      
