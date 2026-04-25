@@ -468,29 +468,34 @@
 
     // 🔥 DISPLAY MEMBERS 🔥
     function displayMembers() {
-        var tableBody = document.getElementById("tableBody");
-        tableBody.innerHTML = "";
-        var isAdmin = localStorage.getItem('isAdmin') === 'true';
+    var tableBody = document.getElementById("tableBody");
+    tableBody.innerHTML = "";
+    var isAdmin = localStorage.getItem('isAdmin') === 'true';
 
-        if(membersData.length == 0) {
-            var colCount = isAdmin ? 4 : 3;
-            tableBody.innerHTML = "<tr><td colspan='"+colCount+"' style='color:#aaa;'>No members added yet</td></tr>";
-            return;
-        }
+    // 🔥 AUTO SORT BY NEAREST EXPIRY
+    membersData.sort((a, b) => new Date(a.expiry) - new Date(b.expiry));
 
-        membersData.forEach((member, index) => {
-            var row = tableBody.insertRow();
-            row.insertCell(0).innerHTML = member.ign;
-            row.insertCell(1).innerHTML = formatDate(new Date(member.expiry));
-            row.insertCell(2).innerHTML = getStatus(member.expiry);
-            
-            // ACTION COLUMN - KUNG ADMIN LANG MAY BUTTON
-            if(isAdmin) {
-                var cell4 = row.insertCell(3);
-                cell4.innerHTML = "<button type='button' class='action-btn' onclick='openModal("+index+")'>VIEW</button>";
-            }
-        });
+    // 🔥 SINGLE CHECK LANG (TINANGGAL NA DUPLICATE)
+    if(membersData.length == 0) {
+        var colCount = isAdmin ? 4 : 3;
+        tableBody.innerHTML = "<tr><td colspan='"+colCount+"' style='color:#aaa;'>No members added yet</td></tr>";
+        return;
     }
+
+    membersData.forEach((member, index) => {
+        var row = tableBody.insertRow();
+
+        // ✅ TAMANG FIELD
+        row.insertCell(0).innerHTML = member.ign + "<br><small>(" + member.owner + ")</small>";
+        row.insertCell(1).innerHTML = formatDate(new Date(member.expiry));
+        row.insertCell(2).innerHTML = getStatus(member.expiry);
+
+        if(isAdmin) {
+            var cell4 = row.insertCell(3);
+            cell4.innerHTML = "<button type='button' class='action-btn' onclick='openModal("+index+")'>VIEW</button>";
+        }
+    });
+}
 
     // 🔥 ADD MEMBER 🔥
     function addMember() {
@@ -599,4 +604,4 @@
 </script>
 
 </body>
-</html>
+    </html>
