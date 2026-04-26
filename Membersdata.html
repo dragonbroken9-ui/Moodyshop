@@ -146,6 +146,13 @@
         .delete-btn:hover {
             background: #cc0000;
         }
+        .history-btn {
+            background: #33b5e5;
+            color: white;
+        }
+        .history-btn:hover {
+            background: #0099cc;
+        }
         .status-active {
             color: #4CAF50;
             font-weight: bold;
@@ -189,8 +196,8 @@
         .option-btn {
             display: block;
             width: 90%;
-            padding: 15px;
-            margin: 10px auto;
+            padding: 12px;
+            margin: 8px auto;
             background: #fdb813;
             color: black;
             text-decoration: none;
@@ -269,6 +276,33 @@
             border-radius: 5px;
             z-index: 999;
         }
+
+        /* 📜 HISTORY MODAL STYLE */
+        #historyModal .modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        #historyList {
+            text-align: left;
+            max-height: 50vh;
+            overflow-y: auto;
+            padding: 10px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+        .history-item {
+            border-bottom: 1px dashed #fdb813;
+            padding: 8px 0;
+        }
+        .history-date {
+            color: #fdb813;
+            font-weight: bold;
+        }
+        .history-desc {
+            color: #eee;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -341,267 +375,350 @@
         </div>
     </div>
 
-    <!-- MODAL -->
+    <!-- MODAL OPTIONS -->
     <div id="myModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2>MEMBER OPTIONS</h2>
             <p id="modal-ign">IGN: Name</p>
             <br>
-            <!-- NILITIS KO NA TO, 1 AT 6 MONTHS NA -->
             <button type="button" class="option-btn" onclick="extendSelected(1)">📅 1 MONTH</button>
             <button type="button" class="option-btn" onclick="extendSelected(6)">📅 6 MONTHS</button>
+            <button type="button" class="option-btn history-btn" onclick="openHistory()">📜 HISTORY</button>
             <hr style="border:1px dashed #fdb813; margin:20px 0;">
             <button type="button" class="option-btn delete-btn" onclick="deleteSelected()">🗑️ DELETE</button>
         </div>
     </div>
+
+    <!-- 📜 HISTORY MODAL -->
+    <div id="historyModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeHistory()">&times;</span>
+            <h2>📜 MEMBER HISTORY</h2>
+            <div id="historyList"></div>
+            <button type="button" class="option-btn" onclick="closeHistory()">CLOSE</button>
+        </div>
+    </div>
+    
 <script>
-    // 🔐 ADMIN PASSWORD
-    const PASSWORD = "moodymadz180129"; 
+// 🔐 ADMIN PASSWORD
+const PASSWORD = "moodymadz180129";
 
-    // INITIALIZE
-    if(!localStorage.getItem('botMembers')) {
-        localStorage.setItem('botMembers', JSON.stringify([]));
+// 🔧 INIT STORAGE
+if (!localStorage.getItem('botMembers')) {
+    localStorage.setItem('botMembers', JSON.stringify([]));
+}
+
+let membersData = JSON.parse(localStorage.getItem('botMembers')) || [];
+let selectedIndex = -1;
+
+// 🔥 FIX OLD DATA
+membersData.forEach(m => {
+    if (!m.history) m.history = [];
+});
+
+// 🔐 SHOW ADMIN UI
+function showAdminControls() {
+    document.querySelectorAll('.admin-only').forEach(el => {
+        el.style.display = 'block';
+    });
+}
+
+// 🔐 LOGIN
+function openLogin() {
+    document.getElementById('loginScreen').style.display = 'block';
+}
+function closeLogin() {
+    document.getElementById('loginScreen').style.display = 'none';
+}
+function checkLogin() {
+    let pass = document.getElementById('adminPass').value;
+
+    if (pass == PASSWORD) {
+        localStorage.setItem('isAdmin', 'true');
+
+        showAdminControls();
+        displayMembers(); // 🔥 refresh table
+
+        closeLogin();
+    } else {
+        document.getElementById('wrongPass').style.display = 'block';
+    }
+}
+function logout() {
+    localStorage.removeItem('isAdmin');
+    location.reload();
+}
+
+// 📅 FORMAT
+function formatDate(d) {
+    const m = ["January","February","March","April","May","June",
+               "July","August","September","October","November","December"];
+    return d.getDate() + " " + m[d.getMonth()] + " " + d.getFullYear();
+}
+
+function formatDateTime(d) {
+    let h = d.getHours();
+    let min = d.getMinutes();
+    let ampm = h >= 12 ? "PM" : "AM";
+
+    h = h % 12 || 12;
+    min = min < 10 ? "0" + min : min;
+
+    return formatDate(d) + " " + h + ":" + min + " " + ampm;
+}
+
+// 🔥 STATUS
+function getStatus(exp) {
+    let e = new Date(exp);
+    let t = new Date();
+
+    e.setHours(0,0,0,0);
+    t.setHours(0,0,0,0);
+
+    let diff = Math.ceil((e - t)/(1000*60*60*24));
+
+    if (diff <= 0) return "<span class='status-expired'>❌ EXPIRED</span>";
+    if (diff <= 5) return "<span class='status-soon'>⚠️ " + diff + " DAYS LEFT</span>";
+    return "<span class='status-active'>✅ ACTIVE</span>";
+}
+
+// 🔔 NOTIFICATION BAR
+function checkNotifications() {
+    let today = new Date();
+    today.setHours(0,0,0,0);
+
+    let expired = [];
+    let soon = [];
+
+    membersData.forEach(m => {
+        let exp = new Date(m.expiry);
+        exp.setHours(0,0,0,0);
+
+        let diff = Math.ceil((exp - today)/(1000*60*60*24));
+
+        if (diff <= 0) expired.push(m.ign);
+        else if (diff <= 5) soon.push(`${m.ign} (${diff}d)`);
+    });
+
+    let bar = document.getElementById("notificationBar");
+    if (!bar) return;
+
+    if (expired.length) {
+        bar.className = "notification-bar alert-expired";
+        bar.innerHTML = "🔴 EXPIRED: " + expired.join(", ");
+    } else if (soon.length) {
+        bar.className = "notification-bar alert-soon";
+        bar.innerHTML = "🟠 WARNING: " + soon.join(", ");
+    } else {
+        bar.className = "notification-bar alert-none";
+        bar.innerHTML = "🟢 All Active";
+    }
+}
+
+// 🔔 POPUP
+function showPopupReminders() {
+    let today = new Date();
+    today.setHours(0,0,0,0);
+
+    let expired = [];
+    let soon = [];
+
+    membersData.forEach(m => {
+        let exp = new Date(m.expiry);
+        exp.setHours(0,0,0,0);
+
+        let diff = Math.ceil((exp - today)/(1000*60*60*24));
+
+        if (diff <= 0) expired.push(m.ign);
+        else if (diff <= 5) soon.push(`${m.ign} (${diff}d)`);
+    });
+
+    let lastShown = localStorage.getItem("lastPopupDate");
+    let todayStr = today.toISOString().split("T")[0];
+
+    if (lastShown === todayStr) return;
+    if (!expired.length && !soon.length) return;
+
+    let msg = "📢 MEMBERSHIP ALERT\n\n";
+
+    if (expired.length) msg += "🔴 EXPIRED:\n" + expired.join(", ") + "\n\n";
+    if (soon.length) msg += "🟠 EXPIRING SOON:\n" + soon.join(", ");
+
+    alert(msg);
+    localStorage.setItem("lastPopupDate", todayStr);
+}
+
+// 📊 DISPLAY MEMBERS (🔥 FIXED)
+function displayMembers() {
+    let tb = document.getElementById("tableBody");
+    if (!tb) return;
+
+    tb.innerHTML = "";
+
+    let isAdmin = localStorage.getItem('isAdmin') === 'true';
+
+    // 👉 FIX HEADER
+    let header = document.getElementById("actionHeader");
+    if (header) {
+        header.style.display = isAdmin ? "table-cell" : "none";
     }
 
-    let membersData = JSON.parse(localStorage.getItem('botMembers'));
-    let selectedIndex = -1;
+    membersData.sort((a,b)=> new Date(a.expiry) - new Date(b.expiry));
 
-    // 🔐 LOGIN FUNCTIONS
-    function openLogin() {
-        document.getElementById('loginScreen').style.display = 'block';
-    }
-    function closeLogin() {
-        document.getElementById('loginScreen').style.display = 'none';
-    }
-
-    function checkLogin() {
-        var pass = document.getElementById('adminPass').value;
-        if(pass == PASSWORD) {
-            localStorage.setItem('isAdmin', 'true');
-            showAdminControls();
-            closeLogin();
-            location.reload();
-        } else {
-            document.getElementById('wrongPass').style.display = 'block';
-        }
-    }
-
-    function logout() {
-        localStorage.removeItem('isAdmin');
-        location.reload();
-    }
-
-    function showAdminControls() {
-        var elements = document.querySelectorAll('.admin-only');
-        elements.forEach(el => el.style.display = 'block');
-    }
-
-    // 🔥 FORMAT DATE 🔥
-    function formatDate(dateObj) {
-        const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-        let day = dateObj.getDate();
-        let month = months[dateObj.getMonth()];
-        let year = dateObj.getFullYear();
-        return day + " " + month + " " + year;
-    }
-
-    // 🔥 CHECK STATUS 🔥
-    function getStatus(expiryDateString) {
-        var expDate = new Date(expiryDateString);
-        var today = new Date();
-        expDate.setHours(0,0,0,0);
-        today.setHours(0,0,0,0);
-        var diffMs = expDate - today;
-        var diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-        if (diffDays <= 0) {
-            return "<span class='status-expired'>❌ EXPIRED</span>";
-        } else if (diffDays <= 5) {
-            return "<span class='status-soon'>⚠️ EXPIRE SOON (" + diffDays + " DAYS LEFT)</span>";
-        } else {
-            return "<span class='status-active'>✅ ACTIVE</span>";
-        }
-    }
-
-    // 🔥 CHECK NOTIFICATIONS 🔥
-    function checkNotifications() {
-        var today = new Date();
-        today.setHours(0,0,0,0);
-        var notifyBar = document.getElementById("notificationBar");
-        
-        let expiredList = [];
-        let soonList = [];
-
-        membersData.forEach(member => {
-            var expDate = new Date(member.expiry);
-            expDate.setHours(0,0,0,0);
-            var diffMs = expDate - today;
-            var diffDays = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-            if (diffDays <= 0) expiredList.push(member.ign);
-            else if (diffDays <= 5) soonList.push({ name: member.ign, days: diffDays });
-        });
-
-        let message = "";
-        let className = "";
-
-        if (expiredList.length > 0 && soonList.length > 0) {
-            className = "alert-expired";
-            message = "🔴 EXPIRED:\n" + expiredList.join(", ") + "\n\n🟠 WARNING:\n";
-            soonList.forEach(item => message += "⚠️ " + item.name + " - " + item.days + " DAYS LEFT!\n");
-        } else if (expiredList.length > 0) {
-            className = "alert-expired";
-            message = "🔴 EXPIRED:\n" + expiredList.join(", ");
-        } else if (soonList.length > 0) {
-            className = "alert-soon";
-            message = "🟠 WARNING:\n";
-            soonList.forEach(item => message += "⚠️ " + item.name + " - " + item.days + " DAYS LEFT!\n");
-        } else {
-            className = "alert-none";
-            message = "🟢 All accounts are Active!";
-        }
-
-        notifyBar.className = "notification-bar " + className;
-        notifyBar.innerHTML = message;
-    }
-
-    // 🔥 DISPLAY MEMBERS 🔥
-    function displayMembers() {
-    var tableBody = document.getElementById("tableBody");
-    tableBody.innerHTML = "";
-    var isAdmin = localStorage.getItem('isAdmin') === 'true';
-
-    // 🔥 AUTO SORT BY NEAREST EXPIRY
-    membersData.sort((a, b) => new Date(a.expiry) - new Date(b.expiry));
-
-    // 🔥 SINGLE CHECK LANG (TINANGGAL NA DUPLICATE)
-    if(membersData.length == 0) {
-        var colCount = isAdmin ? 4 : 3;
-        tableBody.innerHTML = "<tr><td colspan='"+colCount+"' style='color:#aaa;'>No members added yet</td></tr>";
+    if (!membersData.length) {
+        tb.innerHTML = "<tr><td colspan='" + (isAdmin ? 4 : 3) + "'>No members</td></tr>";
         return;
     }
 
-    membersData.forEach((member, index) => {
-        var row = tableBody.insertRow();
+    membersData.forEach((m,i)=>{
+        let row = tb.insertRow();
 
-        // ✅ TAMANG FIELD
-        row.insertCell(0).innerHTML = member.ign + "<br><small>(" + member.owner + ")</small>";
-        row.insertCell(1).innerHTML = formatDate(new Date(member.expiry));
-        row.insertCell(2).innerHTML = getStatus(member.expiry);
+        row.insertCell(0).innerHTML = m.ign + "<br><small>("+m.owner+")</small>";
+        row.insertCell(1).innerHTML = formatDate(new Date(m.expiry));
+        row.insertCell(2).innerHTML = getStatus(m.expiry);
 
-        if(isAdmin) {
-            var cell4 = row.insertCell(3);
-            cell4.innerHTML = "<button type='button' class='action-btn' onclick='openModal("+index+")'>VIEW</button>";
+        if (isAdmin) {
+            let cell = row.insertCell(3);
+            cell.innerHTML =
+                `<button class="action-btn" onclick="openModal(${i})">VIEW</button>`;
         }
     });
 }
 
-    // 🔥 ADD MEMBER 🔥
-    function addMember() {
-        var ign = document.getElementById("newIGN").value.trim();
-        var owner = document.getElementById("newOwner").value.trim();
-        var dateStartStr = document.getElementById("newDate").value;
+// ➕ ADD MEMBER
+function addMember() {
+    let ign = document.getElementById("newIGN").value.trim();
+    let owner = document.getElementById("newOwner").value.trim();
+    let date = document.getElementById("newDate").value;
 
-        if (ign == "" || owner == "" || dateStartStr == "") {
-            alert("Please fill all fields!");
-            return;
-        }
+    if (!ign || !owner || !date) return alert("Fill all fields!");
 
-        var dateStart = new Date(dateStartStr);
-        dateStart.setMonth(dateStart.getMonth() + 1); // AUTO 1 MONTH
-        var expirySave = dateStart.toISOString().split('T')[0];
+    let d = new Date(date);
+    d.setMonth(d.getMonth() + 1);
 
-        membersData.push({ ign: ign, owner: owner, expiry: expirySave, status: "ACTIVE" });
-        localStorage.setItem('botMembers', JSON.stringify(membersData));
-        displayMembers();
-        checkNotifications();
-        document.getElementById("newIGN").value = "";
-        document.getElementById("newOwner").value = "";
-        document.getElementById("newDate").value = "";
-        alert("✅ Member Added!");
-    }
+    let yyyy = d.getFullYear();
+    let mm = String(d.getMonth()+1).padStart(2,'0');
+    let dd = String(d.getDate()).padStart(2,'0');
 
-    // 🔥 MODAL FUNCTIONS 🔥
-    function openModal(index) {
-        // CHECK MUNA KUNG ADMIN TALAGA BAGO MAG OPEN
-        var isAdmin = localStorage.getItem('isAdmin') === 'true';
-        if(!isAdmin) {
-            alert("🔒 Access Denied! Please login as Admin.");
-            return;
-        }
+    membersData.push({
+        ign, owner,
+        expiry: `${yyyy}-${mm}-${dd}`,
+        history: [{ date: new Date().toISOString(), action: "📥 Member Added" }]
+    });
 
-        selectedIndex = index;
-        document.getElementById("modal-ign").innerHTML = "IGN: " + membersData[index].ign;
-        document.getElementById("myModal").style.display = "block";
-    }
+    localStorage.setItem('botMembers', JSON.stringify(membersData));
 
-    function closeModal() {
-        document.getElementById("myModal").style.display = 'none';
-        selectedIndex = -1;
-    }
+    displayMembers();
+    checkNotifications();
 
-    // 🔥 EXTEND FUNCTION - NAKA MONTH NA ITO 🔥
-    function extendSelected(months) {
-        if(selectedIndex === -1) return;
-        var member = membersData[selectedIndex];
-        var newDate = new Date(member.expiry);
-        
-        // MAG A-ADJUST NA ITO AUTOMATIC KAHIT FEB 28/29
-        newDate.setMonth(newDate.getMonth() + months);
-        
-        member.expiry = newDate.toISOString().split('T')[0];
-        
+    newIGN.value = "";
+    newOwner.value = "";
+    newDate.value = "";
+}
+
+// 🔥 MODAL
+function openModal(i) {
+    selectedIndex = i;
+    document.getElementById("modal-ign").innerHTML =
+        "IGN: " + membersData[i].ign;
+
+    document.getElementById("myModal").style.display = "block";
+}
+function closeModal() {
+    document.getElementById("myModal").style.display = "none";
+}
+
+// 📜 HISTORY
+function openHistory() {
+    let m = membersData[selectedIndex];
+    let list = document.getElementById("historyList");
+
+    list.innerHTML = "";
+
+    m.history.slice().reverse().forEach(h => {
+        list.innerHTML += `
+        <div class="history-item">
+            🗓️ ${formatDateTime(new Date(h.date))}<br>
+            ${h.action}
+        </div><hr>`;
+    });
+
+    document.getElementById("historyModal").style.display = "block";
+}
+function closeHistory() {
+    document.getElementById("historyModal").style.display = "none";
+}
+
+// 🔥 EXTEND
+function extendSelected(months) {
+    let m = membersData[selectedIndex];
+    let old = new Date(m.expiry);
+
+    let y = old.getFullYear();
+    let mo = old.getMonth() + months;
+    let d = old.getDate();
+
+    let newD = new Date(y, mo, d);
+    if (newD.getDate() !== d) newD = new Date(y, mo + 1, 0);
+
+    let yyyy = newD.getFullYear();
+    let mm = String(newD.getMonth()+1).padStart(2,'0');
+    let dd = String(newD.getDate()).padStart(2,'0');
+
+    m.expiry = `${yyyy}-${mm}-${dd}`;
+
+    m.history.push({
+        date: new Date().toISOString(),
+        action: `📅 Extended ${months} month(s)`
+    });
+
+    localStorage.setItem('botMembers', JSON.stringify(membersData));
+
+    displayMembers();
+    checkNotifications();
+    closeModal();
+}
+
+// ❌ DELETE
+function deleteSelected() {
+    if (confirm("Delete?")) {
+        membersData.splice(selectedIndex,1);
         localStorage.setItem('botMembers', JSON.stringify(membersData));
         displayMembers();
         checkNotifications();
         closeModal();
-        alert("✅ Extended!");
     }
+}
 
-    function deleteSelected() {
-        if(selectedIndex === -1) return;
-        if(confirm("Delete this member?")) {
-            membersData.splice(selectedIndex, 1);
-            localStorage.setItem('botMembers', JSON.stringify(membersData));
-            displayMembers();
-            checkNotifications();
-            closeModal();
-            alert("🗑️ Deleted!");
-        }
-    }
+// 🔍 SEARCH
+function searchMember() {
+    let txt = prompt("Enter IGN:");
+    if (!txt) return;
 
-    function searchMember() {
-        var searchText = prompt("Enter IGN to search:");
-        if(searchText) {
-            var found = membersData.find(m => m.ign.toLowerCase() == searchText.toLowerCase());
-            if(found) {
-                // SA SEARCH, INFO LANG IPAPAKITA, WALANG OPTION I-EDIT
-                alert("📝 Member Found:\n\nIGN: " + found.ign + "\nOwner: " + found.owner + "\nExpiry: " + formatDate(new Date(found.expiry)));
-            } else {
-                alert("❌ Not found!");
-            }
-        }
-    }
+    let m = membersData.find(x => x.ign.toLowerCase() === txt.toLowerCase());
+    if (m) {
+        alert(`IGN: ${m.ign}\nOwner: ${m.owner}\nExpiry: ${formatDate(new Date(m.expiry))}`);
+    } else alert("Not found");
+}
 
-    // 🔥 START UP 🔥
-    window.onload = function() {
-        var isAdmin = localStorage.getItem('isAdmin') === 'true';
-        
-        if(!isAdmin) {
-            document.getElementById('actionHeader').style.display = 'none';
-        } else {
-            showAdminControls();
-        }
-        
-        displayMembers();
-        checkNotifications();
-    }
+// 🚀 START
+window.onload = function() {
+    let isAdmin = localStorage.getItem('isAdmin') === 'true';
 
-    window.onclick = function(event) {
-        if (event.target == document.getElementById("myModal")) closeModal();
-    }
+    if (isAdmin) showAdminControls();
+
+    displayMembers();
+    checkNotifications();
+    showPopupReminders();
+
+    document.getElementById("historyModal").onclick = e => {
+        if (e.target.id === "historyModal") closeHistory();
+    };
+    document.getElementById("myModal").onclick = e => {
+        if (e.target.id === "myModal") closeModal();
+    };
+};
 </script>
-
 </body>
-    </html>
+</html>
