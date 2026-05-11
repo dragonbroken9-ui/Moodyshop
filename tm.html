@@ -1,57 +1,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>💀 SYSTEM PAYROLL v2.0 🖥️</title>
+    <title>Payroll System - Armored Cash Design</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
         * { box-sizing: border-box; }
         body { 
-            font-family: 'Courier New', Courier, monospace; 
+            font-family: 'Segoe UI', Arial; 
             padding: 5px; 
             margin: 0; 
-            background: #000000; 
-            color: #00ff41;
+            background: #e0e0e0; 
         }
         .container { 
             max-width: 100%; 
             margin: auto; 
-            background: #0a0a0a; 
+            background: #f8f9fa; 
             padding: 10px; 
-            border-radius: 5px; 
-            box-shadow: 0 0 15px #00ff41, 0 0 30px rgba(0,255,65,0.5);
-            border: 2px solid #00ff41;
+            border-radius: 10px; 
+            box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+            border: 2px solid #1a1a1a;
         }
         h1 { 
             text-align: center; 
-            color: #ff003c; 
+            color: #004d1a; 
             margin: 5px 0; 
-            font-size: 20px;
+            font-size: 18px;
             font-weight: bold;
-            text-shadow: 0 0 10px #ff003c;
         }
-        h2 { font-size: 16px; margin: 8px 0; color: #00ff41; }
-        h3 { font-size: 14px; margin: 5px 0; color: #00ff41; }
+        h2 { font-size: 16px; margin: 8px 0; }
+        h3 { font-size: 14px; margin: 5px 0; }
         
-        /* --- HEADER STYLE --- */
+        /* --- ARMORED STYLE HEADER --- */
         .header-bar {
-            background: linear-gradient(to right, #111, #222);
-            color: #00ff41;
-            padding: 10px;
+            background: linear-gradient(to right, #004d1a, #009933);
+            color: white;
+            padding: 8px;
             text-align: center;
-            border-radius: 4px;
-            border: 2px solid #ff003c;
+            border-radius: 6px;
+            border: 2px solid #cc9900;
             margin-bottom: 10px;
-            box-shadow: inset 0 0 10px #ff003c;
         }
-        .header-bar p { margin: 0; font-size: 12px; opacity: 0.8; color: #aaa; }
+        .header-bar p { margin: 0; font-size: 11px; opacity: 0.8; }
 
         .cutoff { 
-            background: #111; 
+            background: #f0f5f0; 
             padding: 10px; 
-            border-radius: 5px; 
+            border-radius: 8px; 
             margin-bottom: 10px; 
-            border: 2px solid #00ff41;
-            box-shadow: inset 0 0 10px #00ff41;
+            border: 2px solid #006622;
         }
         .row { 
             display: flex; 
@@ -66,114 +62,94 @@
         label { 
             font-size: 11px; 
             font-weight: bold; 
-            color: #00ff41;
+            color: #003300;
         }
         input { 
             width: 100%; 
             padding: 8px; 
             margin-top: 2px; 
-            background: #000;
-            color: #00ff41;
-            border: 2px solid #00ff41; 
-            border-radius: 3px; 
+            border: 2px solid #006622; 
+            border-radius: 5px; 
             font-size: 12px;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 0 5px #00ff41;
-        }
-        input:focus {
-            outline: none;
-            box-shadow: 0 0 10px #ff003c;
-            border-color: #ff003c;
         }
         button { 
             padding: 8px 12px; 
-            background: #111; 
-            color: #00ff41; 
-            border: 2px solid #00ff41;
-            border-radius: 3px; 
+            background: #006622; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
             cursor: pointer; 
             margin-right: 3px;
             margin-bottom: 5px;
             font-weight: bold;
             font-size: 11px;
-            font-family: 'Courier New', monospace;
-            box-shadow: 0 0 8px #00ff41;
-            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
-        button:hover {
-            background: #00ff41;
-            color: #000;
-        }
-        .btn-green { background: #000; border-color: #00ff41; color: #00ff41; }
-        .btn-red { background: #000; border-color: #ff003c; color: #ff003c; box-shadow: 0 0 8px #ff003c; }
-        .btn-red:hover { background: #ff003c; color: #000; }
-        .btn-blue { background: #000; border-color: #0088ff; color: #0088ff; }
-        .btn-orange { background: #000; border-color: #ff9900; color: #ff9900; }
+        .btn-green { background: #009933; border: 2px solid #cc9900; }
+        .btn-red { background: #990000; }
+        .btn-blue { background: #003366; }
+        .btn-orange { background: #cc7a00; }
 
         table { 
             width: 100%; 
             border-collapse: collapse; 
             margin-top: 10px; 
             font-size: 9px; 
-            border: 2px solid #00ff41;
-            box-shadow: 0 0 10px rgba(0,255,65,0.3);
+            border: 2px solid #004d1a;
         }
         th, td { 
-            border: 1px solid #00ff41; 
+            border: 1px solid #006622; 
             padding: 4px 2px; 
             text-align: center; 
         }
         th { 
-            background: #000; 
-            color: #ff003c; 
+            background: linear-gradient(to bottom, #006622, #004d1a); 
+            color: #ffcc00; 
             font-weight: bold;
-            text-shadow: 0 0 5px #ff003c;
         }
         
-        /* --- SUMMARY BOX --- */
+        /* --- SUMMARY BOX LIKE SAFE --- */
         .summary { 
-            background: #000; 
+            background: linear-gradient(to bottom, #e6f2ff, #f0f5f0); 
             padding: 12px; 
             margin-top: 12px; 
-            border-radius: 5px; 
-            border: 2px solid #00ff41;
-            box-shadow: inset 0 0 10px #00ff41;
+            border-radius: 8px; 
+            border: 2px solid #004d1a;
+            box-shadow: inset 0 0 8px #ccc;
         }
         .total { 
             font-weight: bold; 
             margin: 5px 0; 
             font-size: 12px;
-            color: #00ff41;
+            color: #003300;
         }
         .netpay { 
             font-size: 16px; 
-            color: #ff003c; 
+            color: #006622; 
             font-weight: bold; 
             text-align: center;
-            background: #000;
-            padding: 10px;
-            border-radius: 4px;
-            border: 2px solid #ff003c;
+            background: #fff;
+            padding: 8px;
+            border-radius: 6px;
+            border: 2px solid #cc9900;
             margin-top: 8px;
-            text-shadow: 0 0 10px #ff003c;
-            box-shadow: inset 0 0 10px #ff003c;
         }
         .deductions { 
-            background: #111; 
+            background: #fff9e6; 
             padding: 10px; 
             border-radius: 6px; 
             margin-top:10px;
-            border: 1px solid #ffcc00;
+            border: 1px solid #cc9900;
         }
 
-        /* --- PAYSLIP DESIGN --- */
+        /* --- PAYSLLIP DESIGN --- */
         #payslipArea { 
             display: none; 
-            background: #000000; 
-            border: 3px solid #00ff41; 
+            background: #ffffff; 
+            border: 3px solid #004d1a; 
             padding: 15px; 
             margin-top: 15px; 
-            box-shadow: 0 0 20px #00ff41;
+            box-shadow: 0 0 15px #aaa;
         }
         .payslip-header { 
             text-align: center; 
@@ -184,45 +160,42 @@
             border-collapse: collapse; 
         }
         .payslip-table td, .payslip-table th { 
-            border: 1px solid #00ff41; 
+            border: 1px solid #004d1a; 
             padding: 8px; 
         }
         .payslip-total { 
             text-align: right; 
             font-weight: bold; 
             font-size: 16px; 
-            color: #ff003c; 
-            text-shadow: 0 0 8px #ff003c;
+            color: #004d1a; 
         }
 
         /* --- HISTORY PAGE --- */
         #historyPage { display: none; }
         .history-controls { 
-            background: #111; 
+            background: #e6f2e6; 
             padding: 10px; 
             border-radius: 6px; 
             margin-bottom: 8px;
-            border: 1px solid #00ff41;
+            border: 1px solid #006622;
         }
         .history-item { 
-            background: #0a0a0a; 
-            border: 2px solid #00ff41; 
+            background: #f8f9fa; 
+            border: 2px solid #006622; 
             padding: 10px; 
             margin: 8px 0; 
             border-radius: 6px; 
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .history-item:hover { 
-            background: #111; 
-            border-color: #ff003c;
-            box-shadow: 0 0 10px #ff003c;
+            background: #e6f5e6; 
+            border-color: #cc9900;
         }
 
         @media print {
             body * { visibility: hidden; }
             #payslipArea, #payslipArea * { visibility: visible; }
-            #payslipArea { position: absolute; left: 0; top: 0; width: 100%; background: white; color: black; border: 1px solid black; }
-            #payslipArea th, #payslipArea td { border: 1px solid black; color: black; text-shadow: none; }
+            #payslipArea { position: absolute; left: 0; top: 0; width: 100%; }
             button { display: none; }
         }
 
@@ -233,31 +206,19 @@
             button { padding: 6px 8px; font-size: 10px; }
             .summary { padding: 10px; }
         }
-
-        /* SCROLL */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #000;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #00ff41;
-            box-shadow: 0 0 10px #00ff41;
-        }
     </style>
 </head>
 <body>
 
 <div class="container">
     <div class="header-bar">
-        <h1>💀 SECURE PAYROLL SYSTEM v2.0 🖥️</h1>
-        <p>DATA ENCRYPTED • ACCESS GRANTED • COMPUTATION INITIATED</p>
+        <h1>💰 SECURE PAYROLL SYSTEM 🚛</h1>
+        <p>PROTECTED & CERTIFIED COMPUTATION</p>
     </div>
 
-    <button onclick="showPage('main')" class="btn-blue">📝 MAIN TERMINAL</button>
-    <button onclick="showPage('history')" class="btn-orange">📜 LOGS HISTORY</button>
-    <hr style="border: 1px solid #ff003c; margin: 8px 0; box-shadow: 0 0 5px #ff003c;">
+    <button onclick="showPage('main')" class="btn-blue">📝 MAIN</button>
+    <button onclick="showPage('history')" class="btn-orange">📜 HISTORY</button>
+    <hr style="border: 1px solid #006622; margin: 8px 0;">
 
     <!-- ============================================== -->
     <!-- ================= MAIN PAGE ================== -->
@@ -266,7 +227,7 @@
 
         <!-- CUT OFF SETTING -->
         <div class="cutoff">
-            <h3>📅 SET PERIOD RANGE</h3>
+            <h3>📅 SET CUT-OFF PERIOD</h3>
             <div class="row">
                 <div class="col">
                     <label>FROM:</label>
@@ -277,8 +238,8 @@
                     <input type="date" id="toDate">
                 </div>
                 <div class="col">
-                    <label>USER ID / NAME:</label>
-                    <input type="text" id="empName" placeholder="Enter Identity">
+                    <label>EMP NAME:</label>
+                    <input type="text" id="empName" placeholder="Enter Name">
                 </div>
             </div>
         </div>
@@ -306,27 +267,27 @@
             
             <div class="row">
                 <div class="col">
-                    <label>RATE / DAY (₱):</label>
+                    <label>DAILY RATE (₱):</label>
                     <input type="number" id="dailyrate" value="600">
                 </div>
                 <div class="col">
-                    <label>OT MULTIPLIER:</label>
+                    <label>OT RATE (x):</label>
                     <input type="number" id="otrate" value="1.3" step="0.01">
                 </div>
                 <div class="col">
-                    <label>NSD MULTIPLIER:</label>
+                    <label>NSD RATE (x):</label>
                     <input type="number" id="nsdrate" value="0.10" step="0.01">
                 </div>
                 <div class="col">
-                    <label>BREAK TIME:</label>
-                    <input type="text" value="1 HR (DEDUCTED)" disabled style="background:#111;">
+                    <label>BREAK:</label>
+                    <input type="text" value="1 HR (DEDUCTED)" disabled style="background:#eee;">
                 </div>
             </div>
 
-            <button onclick="addRecord()" class="btn-green">➕ UPLOAD DATA</button>
-            <button onclick="saveCutoff()" class="btn-green">💾 SAVE TO DATABASE</button>
-            <button onclick="generatePayslip()">📄 GENERATE REPORT</button>
-            <button onclick="clearAll()" class="btn-red">🗑️ WIPE SYSTEM</button>
+            <button onclick="addRecord()" class="btn-green">➕ SAVE</button>
+            <button onclick="saveCutoff()" class="btn-green">💾 SAVE CUT-OFF</button>
+            <button onclick="generatePayslip()">📄 PAYSLIP</button>
+            <button onclick="clearAll()" class="btn-red">🗑️ CLEAR</button>
         </div>
 
         <table id="dtrTable">
@@ -343,373 +304,378 @@
                     <th>REG PAY</th>
                     <th>OT PAY</th>
                     <th>NSD PAY</th>
-                    <th>DAILY TOTAL</th>
+                    <th>DAILY</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
             </tbody>
         </table>
-        <!-- SUMMARY -->
-        <div class="summary">
-            <h2>📊 SYSTEM ANALYTICS</h2>
-            <hr style="border:1px solid #ff003c; margin:5px 0;">
-            <p class="total">🟢 TOTAL REGULAR HOURS: <span id="totalHours">0.00</span> hrs</p>
-            <p class="total">🟢 TOTAL OT HOURS: <span id="totalOT">0.00</span> hrs</p>
-            <p class="total">🟢 TOTAL NSD HOURS: <span id="totalNSD">0.00</span> hrs</p>
-            <p class="total">💰 GROSS PAY: ₱ <span id="grossPay">0.00</span></p>
 
-            <div class="deductions">
-                <h3>🔌 DEDUCTIONS CONFIG</h3>
-                <div class="row">
-                    <div class="col">
-                        <label>SSS:</label>
-                        <input type="number" id="sss" value="0" min="0">
-                    </div>
-                    <div class="col">
-                        <label>PHILHEALTH:</label>
-                        <input type="number" id="philhealth" value="0" min="0">
-                    </div>
-                    <div class="col">
-                        <label>PAG-IBIG:</label>
-                        <input type="number" id="pagibig" value="0" min="0">
-                    </div>
-                    <div class="col">
-                        <label>OTHERS:</label>
-                        <input type="number" id="others" value="0" min="0">
-                    </div>
+        <div class="summary">
+            <h2 style="text-align:center; color:#004d1a;">📊 SUMMARY</h2>
+            <p class="total">📅 Period: <span id="periodCovered">---</span></p>
+            <hr style="border:1px solid #006622; margin:5px 0;">
+            <div class="row">
+                <div class="col">
+                    <p class="total">✅ Regular: <span id="sumRegHrs">0</span> hrs</p>
+                    <p class="total">⏰ OT: <span id="sumOtHrs">0</span> hrs</p>
+                    <p class="total">🌙 NSD: <span id="sumNsdHrs">0</span> hrs</p>
                 </div>
-                <button onclick="updateDeductions()" class="btn-blue">🔄 UPDATE</button>
+                <div class="col">
+                    <p class="total" style="color:#004d1a; font-size:14px;">💵 GROSS: ₱ <span id="grossPay">0.00</span></p>
+                </div>
             </div>
 
-            <p class="total">⚠️ TOTAL DEDUCTIONS: ₱ <span id="totalDeduc">0.00</span></p>
-            <p class="netpay">💳 NET PAY: ₱ <span id="netPay">0.00</span></p>
+            <div class="deductions">
+                <h3>📋 DEDUCTIONS</h3>
+                <p class="total">🔹 SSS: ₱ <span id="sss">0.00</span></p>
+                <p class="total">🔹 PHIL: ₱ <span id="philhealth">0.00</span></p>
+                <p class="total">🔹 PAGIBIG: ₱ <span id="pagibig">0.00</span></p>
+                <p class="netpay">💰 NET PAY: ₱ <span id="netPay">0.00</span></p>
+            </div>
         </div>
-    </div>
+
+        <!-- PAYSLIP AREA -->
+        <div id="payslipArea">
+            <div class="payslip-header">
+                <h2>OFFICIAL PAYSLIP</h2>
+                <p><strong>Name:</strong> <span id="printName">---</span></p>
+                <p><strong>Period:</strong> <span id="printPeriod">---</span></p>
+            </div>
+
+            <table class="payslip-table">
+                <tr>
+                    <th>EARNINGS</th>
+                    <th>AMOUNT</th>
+                    <th>DEDUCTIONS</th>
+                    <th>AMOUNT</th>
+                </tr>
+                <tr>
+                    <td>Regular Pay</td>
+                    <td id="pReg">0.00</td>
+                    <td>SSS</td>
+                    <td id="pSss">0.00</td>
+                </tr>
+                <tr>
+                    <td>Overtime Pay</td>
+                    <td id="pOt">0.00</td>
+                    <td>PhilHealth</td>
+                    <td id="pPhil">0.00</td>
+                </tr>
+                <tr>
+                    <td>Night Shift Diff.</td>
+                    <td id="pNsd">0.00</td>
+                    <td>Pag-IBIG</td>
+                    <td id="pPag">0.00</td>
+                </tr>
+                <tr style="background: #f0f5f0; font-weight: bold;">
+                    <td>TOTAL GROSS</td>
+                    <td id="pGross">0.00</td>
+                    <td>TOTAL DEDUCTION</td>
+                    <td id="pDeduct">0.00</td>
+                </tr>
+            </table>
+            
+            <div class="payslip-total">
+                <h2>NET PAY: ₱ <span id="pNet">0.00</span></h2>
+            </div>
+
+            <br>
+            <button onclick="window.print()" class="btn-green">PRINT PAYSLIP 🖨️</button>
+        </div>
+
+    </div> <!-- END MAIN PAGE -->
 
     <!-- ============================================== -->
-    <!-- ================ HISTORY PAGE ================ -->
+    <!-- ================ HISTORY PAGE =============== -->
     <!-- ============================================== -->
     <div id="historyPage">
-        <h2>📜 ARCHIVE LOGS</h2>
+        <h2>📜 CUT-OFF HISTORY</h2>
+        
         <div class="history-controls">
-            <label>🔍 SEARCH BY NAME:</label>
-            <input type="text" id="searchName" placeholder="Enter User ID..." oninput="searchHistory()">
+            <div class="row">
+                <div
+                <div class="col" style="min-width: 200px;">
+                    <label>🔍 SEARCH:</label>
+                    <input type="text" id="searchInput" oninput="searchHistory()" placeholder="Type name or date...">
+                </div>
+            </div>
         </div>
+
         <div id="historyList">
-            <!-- Saved records will appear here -->
+            <!-- Dito lalabas ang history -->
         </div>
-    </div>
-
-    <!-- ============================================== -->
-    <!-- ================ PAYSLIP AREA ================ -->
-    <!-- ============================================== -->
-    <div id="payslipArea">
-        <div class="payslip-header">
-            <h1>💀 SYSTEM GENERATED REPORT 💻</h1>
-            <h2>PAYSLIP / SALARY SLIP</h2>
-            <p id="payslipPeriod">PERIOD: ---</p>
-            <p id="payslipName">EMPLOYEE: ---</p>
-        </div>
-
-        <table class="payslip-table">
-            <tr>
-                <th>DESCRIPTION</th>
-                <th>AMOUNT</th>
-                <th>DEDUCTIONS</th>
-            </tr>
-            <tr>
-                <td>Regular Pay</td>
-                <td id="psReg">₱ 0.00</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>OT Pay</td>
-                <td id="psOT">₱ 0.00</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>NSD Pay</td>
-                <td id="psNSD">₱ 0.00</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>SSS: <span id="psSSS">₱ 0.00</span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>PhilHealth: <span id="psPhil">₱ 0.00</span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>Pag-IBIG: <span id="psPag">₱ 0.00</span></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td>Others: <span id="psOthers">₱ 0.00</span></td>
-            </tr>
-            <tr>
-                <td class="payslip-total">GROSS PAY</td>
-                <td class="payslip-total" id="psGross">₱ 0.00</td>
-                <td class="payslip-total">TOTAL DED: <span id="psTotalDeduc">₱ 0.00</span></td>
-            </tr>
-        </table>
-
-        <div class="payslip-total" style="margin-top:20px; font-size:22px;">
-            NET PAY: ₱ <span id="psNet">0.00</span>
-        </div>
-
-        <br>
-        <button onclick="printPayslip()" class="btn-green">🖨️ PRINT REPORT</button>
-        <button onclick="closePayslip()" class="btn-red">❌ CLOSE TERMINAL</button>
     </div>
 
 </div>
 
 <script>
-let tableData = [];
-let currentGross = 0;
+let records = [];
+let history = JSON.parse(localStorage.getItem("payrollHistory")) || [];
 
-// Show/Hide Pages
-function showPage(page) {
-    document.getElementById('mainPage').style.display = (page == 'main') ? 'block' : 'none';
-    document.getElementById('historyPage').style.display = (page == 'history') ? 'block' : 'none';
-    if(page == 'history') loadHistory();
+// --- LEGAL DEDUCTIONS ---
+function getSSS(income) {
+    if(income < 13000) return (income * 0.045);
+    else return 585; // Max
+}
+function getPhilHealth(income) {
+    let contrib = income * 0.025;
+    return Math.min(contrib, 500);
+}
+function getPagIBIG(income) {
+    return Math.min(income * 0.01, 100);
 }
 
-// Compute Time
-function computeTime(timeIn, timeOut) {
-    let start = new Date('1/1/2000 ' + timeIn);
-    let end = new Date('1/1/2000 ' + timeOut);
-    if(end < start) end.setDate(end.getDate() + 1);
-    let diff = (end - start) / 1000 / 60 / 60;
-    let workHrs = diff - 1; // minus 1hr break
-    return { total: diff, work: workHrs };
-}
+function calculate() {
+    let datein = document.getElementById("datein").value;
+    let timein = document.getElementById("timein").value;
+    let dateout = document.getElementById("dateout").value;
+    let timeout = document.getElementById("timeout").value;
+    let dailyRate = parseFloat(document.getElementById("dailyrate").value) || 0;
+    let ratePerHour = dailyRate / 8;
+    let otMult = parseFloat(document.getElementById("otrate").value) || 1.3;
+    let nsdMult = parseFloat(document.getElementById("nsdrate").value) || 0.10;
+    let breakHrs = 1;
 
-// Add Record
-function addRecord() {
-    let dtIn = document.getElementById('datein').value;
-    let tIn = document.getElementById('timein').value;
-    let dtOut = document.getElementById('dateout').value;
-    let tOut = document.getElementById('timeout').value;
-    let rate = parseFloat(document.getElementById('dailyrate').value) || 0;
-    let otMult = parseFloat(document.getElementById('otrate').value) || 1.3;
-    let nsdMult = parseFloat(document.getElementById('nsdrate').value) || 0.10;
+    if (!datein || !timein || !dateout || !timeout) return null;
 
-    if(!dtIn || !tIn || !dtOut || !tOut) { alert("⚠️ INCOMPLETE DATA!"); return; }
+    let dtIn = new Date(datein + " " + timein);
+    let dtOut = new Date(dateout + " " + timeout);
+    if (dtOut <= dtIn) dtOut.setDate(dtOut.getDate() + 1);
 
-    let hrs = computeTime(tIn, tOut);
-    let regHrs = Math.min(hrs.work, 8);
-    let otHrs = Math.max(hrs.work - 8, 0);
-    let nsdHrs = 0; // You can add logic here if needed
+    let totalHrs = (dtOut - dtIn) / (1000 * 60 * 60);
+    let actualWorkHrs = totalHrs - breakHrs;
+    if(actualWorkHrs < 0) actualWorkHrs = 0;
 
-    let ratePerHr = rate / 8;
-    let regPay = regHrs * ratePerHr;
-    let otPay = otHrs * ratePerHr * otMult;
-    let nsdPay = nsdHrs * ratePerHr * nsdMult;
-    let dailyTotal = regPay + otPay + nsdPay;
+    let regHrs = Math.min(actualWorkHrs, 8);
+    let otHrs = Math.max(actualWorkHrs - 8, 0);
 
-    let row = {
-        dtIn, tIn, dtOut, tOut,
-        totalHrs: hrs.total.toFixed(2),
-        workHrs: hrs.work.toFixed(2),
-        regHrs: regHrs.toFixed(2),
-        otHrs: otHrs.toFixed(2),
-        nsdHrs: nsdHrs.toFixed(2),
-        regPay: regPay.toFixed(2),
-        otPay: otPay.toFixed(2),
-        nsdPay: nsdPay.toFixed(2),
-        dailyTotal: dailyTotal.toFixed(2)
+    // NSD Calculation
+    let nsdHrs = 0;
+    let temp = new Date(dtIn);
+    while (temp < dtOut) {
+        let h = temp.getHours();
+        if (h >= 22 || h < 6) nsdHrs += 1/60;
+        temp.setMinutes(temp.getMinutes() + 1);
+    }
+    nsdHrs = Math.min(nsdHrs, regHrs);
+
+    // Pay
+    let regPay = regHrs * ratePerHour;
+    let otPay = otHrs * ratePerHour * otMult;
+    let nsdPay = nsdHrs * ratePerHour * nsdMult;
+    let dailyGross = regPay + otPay + nsdPay;
+
+    return {
+        date: datein, timein: timein, timeout: timeout,
+        totalHrs: totalHrs.toFixed(2), workHrs: actualWorkHrs.toFixed(2),
+        regHrs: regHrs.toFixed(2), otHrs: otHrs.toFixed(2), nsdHrs: nsdHrs.toFixed(2),
+        regPay: regPay.toFixed(2), otPay: otPay.toFixed(2), nsdPay: nsdPay.toFixed(2),
+        dailyGross: dailyGross.toFixed(2)
     };
-
-    tableData.push(row);
-    updateTable();
 }
 
-function updateTable() {
-    let tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-    let totalH=0, totalOT=0, totalNSD=0, gross=0;
+function addRecord() {
+    let data = calculate();
+    if (!data) { alert("Please complete all fields!"); return; }
 
-    tableData.forEach((r, i) => {
-        totalH += parseFloat(r.regHrs);
-        totalOT += parseFloat(r.otHrs);
-        totalNSD += parseFloat(r.nsdHrs);
-        gross += parseFloat(r.dailyTotal);
+    let table = document.getElementById("tableBody");
+    let row = table.insertRow();
+    row.innerHTML = `
+        <td>${data.date}</td>
+        <td>${data.timein}</td>
+        <td>${data.timeout}</td>
+        <td>${data.totalHrs}</td>
+        <td style="color:orange;">${data.workHrs}</td>
+        <td>${data.regHrs}</td>
+        <td style="color:blue;">${data.otHrs}</td>
+        <td style="color:purple;">${data.nsdHrs}</td>
+        <td>${data.regPay}</td>
+        <td>${data.otPay}</td>
+        <td>${data.nsdPay}</td>
+        <td style="font-weight:bold; color:green;">${data.dailyGross}</td>
+    `;
+    records.push(data);
+    updateSummary();
+}
 
-        let tr = tbody.insertRow();
-        tr.innerHTML = `
-            <td>${r.dtIn}</td>
-            <td>${r.tIn}</td>
-            <td>${r.tOut}</td>
-            <td>${r.totalHrs}</td>
-            <td>${r.workHrs}</td>
-            <td>${r.regHrs}</td>
-            <td>${r.otHrs}</td>
-            <td>${r.nsdHrs}</td>
-            <td>${parseFloat(r.regPay).toFixed(2)}</td>
-            <td>${parseFloat(r.otPay).toFixed(2)}</td>
-            <td>${parseFloat(r.nsdPay).toFixed(2)}</td>
-            <td><b>${parseFloat(r.dailyTotal).toFixed(2)}</b></td>
-        `;
+function updateSummary() {
+    let sumRegHrs = 0, sumOtHrs = 0, sumNsdHrs = 0, grossPay = 0;
+    records.forEach(item => {
+        sumRegHrs += parseFloat(item.regHrs);
+        sumOtHrs += parseFloat(item.otHrs);
+        sumNsdHrs += parseFloat(item.nsdHrs);
+        grossPay += parseFloat(item.dailyGross);
     });
 
-    currentGross = gross;
-    document.getElementById('totalHours').innerText = totalH.toFixed(2);
-    document.getElementById('totalOT').innerText = totalOT.toFixed(2);
-    document.getElementById('totalNSD').innerText = totalNSD.toFixed(2);
-    document.getElementById('grossPay').innerText = gross.toFixed(2);
-    updateDeductions();
+    let sss = getSSS(grossPay);
+    let phil = getPhilHealth(grossPay);
+    let pagibig = getPagIBIG(grossPay);
+    let netPay = grossPay - sss - phil - pagibig;
+
+    document.getElementById("sumRegHrs").innerText = sumRegHrs.toFixed(2);
+    document.getElementById("sumOtHrs").innerText = sumOtHrs.toFixed(2);
+    document.getElementById("sumNsdHrs").innerText = sumNsdHrs.toFixed(2);
+    document.getElementById("grossPay").innerText = grossPay.toFixed(2);
+    document.getElementById("sss").innerText = sss.toFixed(2);
+    document.getElementById("philhealth").innerText = phil.toFixed(2);
+    document.getElementById("pagibig").innerText = pagibig.toFixed(2);
+    document.getElementById("netPay").innerText = netPay.toFixed(2);
+
+    // Update Cutoff Display
+    let f = document.getElementById("fromDate").value;
+    let t = document.getElementById("toDate").value;
+    if(f && t) {
+        document.getElementById("periodCovered").innerText = f + " to " + t;
+    }
 }
 
-function updateDeductions() {
-    let sss = parseFloat(document.getElementById('sss').value) || 0;
-    let ph = parseFloat(document.getElementById('philhealth').value) || 0;
-    let pg = parseFloat(document.getElementById('pagibig').value) || 0;
-    let ot = parseFloat(document.getElementById('others').value) || 0;
-    let total = sss + ph + pg + ot;
-    let net = currentGross - total;
-
-    document.getElementById('totalDeduc').innerText = total.toFixed(2);
-    document.getElementById('netPay').innerText = net.toFixed(2);
-}
-
-// SAVE TO LOCAL STORAGE
+// --- SAVE TO HISTORY ---
 function saveCutoff() {
-    let name = document.getElementById('empName').value;
-    let from = document.getElementById('fromDate').value;
-    let to = document.getElementById('toDate').value;
-    if(!name || !from || !to) { alert("⚠️ INPUT NAME & DATES!"); return; }
-    if(tableData.length == 0) { alert("⚠️ NO DATA TO UPLOAD!"); return; }
+    let name = document.getElementById("empName").value || "Unknown";
+    let f = document.getElementById("fromDate").value;
+    let t = document.getElementById("toDate").value;
 
-    let dataObj = {
+    if(!f || !t || records.length == 0) {
+        alert("Please set dates and add records first!");
+        return;
+    }
+
+    let cutoffData = {
         id: Date.now(),
         name: name,
-        period: from + " to " + to,
-        records: tableData,
-        gross: currentGross,
-        sss: parseFloat(document.getElementById('sss').value) || 0,
-        philhealth: parseFloat(document.getElementById('philhealth').value) || 0,
-        pagibig: parseFloat(document.getElementById('pagibig').value) || 0,
-        others: parseFloat(document.getElementById('others').value) || 0
+        from: f,
+        to: t,
+        records: [...records],
+        totalGross: document.getElementById("grossPay").innerText,
+        totalNet: document.getElementById("netPay").innerText
     };
 
-    let allData = JSON.parse(localStorage.getItem('payrollDB') || '[]');
-    allData.push(dataObj);
-    localStorage.setItem('payrollDB', JSON.stringify(allData));
-
-    alert("✅ DATA UPLOADED TO DATABASE!");
+    history.push(cutoffData);
+    localStorage.setItem("payrollHistory", JSON.stringify(history));
+    alert("✅ Saved!");
+    loadHistory();
 }
 
-// LOAD HISTORY
-function loadHistory() {
-    let allData = JSON.parse(localStorage.getItem('payrollDB') || '[]');
-    let list = document.getElementById('historyList');
-    list.innerHTML = '';
+// --- HISTORY FUNCTIONS ---
+function showPage(page) {
+    if(page == 'main') {
+        document.getElementById('mainPage').style.display = 'block';
+        document.getElementById('historyPage').style.display = 'none';
+    } else {
+        document.getElementById('mainPage').style.display = 'none';
+        document.getElementById('historyPage').style.display = 'block';
+        loadHistory();
+    }
+}
 
-    allData.forEach((item, index) => {
-        let totalDeduc = item.sss + item.philhealth + item.pagibig + item.others;
-        let net = item.gross - totalDeduc;
-        let div = document.createElement('div');
-        div.className = 'history-item';
+function loadHistory() {
+    let list = document.getElementById("historyList");
+    list.innerHTML = "";
+    if(history.length == 0) {
+        list.innerHTML = "<p style='text-align:center; color:gray; padding:15px;'>No history found.</p>";
+        return;
+    }
+
+    history.forEach((item, index) => {
+        let div = document.createElement("div");
+        div.className = "history-item";
         div.innerHTML = `
-            <h3>🆔 ${item.name}</h3>
-            <p>📅 ${item.period}</p>
-            <p>💰 Gross: ₱${item.gross.toFixed(2)} | 📉 Deductions: ₱${totalDeduc.toFixed(2)} | ✅ Net: ₱${net.toFixed(2)}</p>
-            <button onclick="loadRecord(${index})" class="btn-green">📂 LOAD</button>
-            <button onclick="deleteRecord(${index})" class="btn-red">🗑️ DELETE</button>
+            <h3>📅 ${item.from} to ${item.to}</h3>
+            <p><strong>👤 ${item.name}</strong></p>
+            <p><strong>💰 ₱${item.totalNet}</strong></p>
+            <button onclick="viewHistory(${index})" class="btn-green">VIEW</button>
+            <button onclick="deleteHistory(${index})" class="btn-red">DELETE</button>
         `;
         list.appendChild(div);
     });
 }
 
-function loadRecord(index) {
-    let allData = JSON.parse(localStorage.getItem('payrollDB') || '[]');
-    let item = allData[index];
-    
-    tableData = item.records;
-    currentGross = item.gross;
-    document.getElementById('empName').value = item.name;
-    document.getElementById('fromDate').value = item.period.split(' to ')[0];
-    document.getElementById('toDate').value = item.period.split(' to ')[1];
-    document.getElementById('sss').value = item.sss;
-    document.getElementById('philhealth').value = item.philhealth;
-    document.getElementById('pagibig').value = item.pagibig;
-    document.getElementById('others').value = item.others;
-
-    updateTable();
-    showPage('main');
-}
-
-function deleteRecord(index) {
-    if(!confirm("⚠️ CONFIRM DATA DELETION?")) return;
-    let allData = JSON.parse(localStorage.getItem('payrollDB') || '[]');
-    allData.splice(index,1);
-    localStorage.setItem('payrollDB', JSON.stringify(allData));
-    loadHistory();
-}
-
 function searchHistory() {
-    let txt = document.getElementById('searchName').value.toLowerCase();
-    document.querySelectorAll('.history-item').forEach(el => {
-        el.style.display = el.innerText.toLowerCase().includes(txt) ? 'block' : 'none';
+    let search = document.getElementById("searchInput").value.toLowerCase();
+    let items = document.querySelectorAll(".history-item");
+    
+    items.forEach((div, index) => {
+                let text = div.innerText.toLowerCase();
+        if(text.includes(search)) div.style.display = "block";
+        else div.style.display = "none";
     });
 }
 
-// GENERATE PAYSLIP
-function generatePayslip() {
-    let sss = parseFloat(document.getElementById('sss').value) || 0;
-    let ph = parseFloat(document.getElementById('philhealth').value) || 0;
-    let pg = parseFloat(document.getElementById('pagibig').value) || 0;
-    let ot = parseFloat(document.getElementById('others').value) || 0;
-    let totalDeduc = sss + ph + pg + ot;
-    let net = currentGross - totalDeduc;
-
-    document.getElementById('payslipName').innerText = "USER ID: " + document.getElementById('empName').value;
-    document.getElementById('payslipPeriod').innerText = "PERIOD: " + document.getElementById('fromDate').value + " TO " + document.getElementById('toDate').value;
-
-    document.getElementById('psReg').innerText = "₱ " + (currentGross - (parseFloat(document.getElementById('totalOT').innerText)*((parseFloat(document.getElementById('dailyrate').value)/8)*1.3) - parseFloat(document.getElementById('totalNSD').innerText)*((parseFloat(document.getElementById('dailyrate').value)/8)*0.10))).toFixed(2);
-    document.getElementById('psOT').innerText = "₱ " + (parseFloat(document.getElementById('totalOT').innerText)*((parseFloat(document.getElementById('dailyrate').value)/8)*1.3)).toFixed(2);
-    document.getElementById('psNSD').innerText = "₱ " + (parseFloat(document.getElementById('totalNSD').innerText)*((parseFloat(document.getElementById('dailyrate').value)/8)*0.10)).toFixed(2);
-    document.getElementById('psGross').innerText = "₱ " + currentGross.toFixed(2);
-
-    document.getElementById('psSSS').innerText = "₱ " + sss.toFixed(2);
-    document.getElementById('psPhil').innerText = "₱ " + ph.toFixed(2);
-    document.getElementById('psPag').innerText = "₱ " + pg.toFixed(2);
-    document.getElementById('psOthers').innerText = "₱ " + ot.toFixed(2);
-    document.getElementById('psTotalDeduc').innerText
-    document.getElementById('psNet').innerText = net.toFixed(2);
-
-    document.getElementById('payslipArea').style.display = 'block';
-    window.scrollTo(0, document.getElementById('payslipArea').offsetTop);
+function viewHistory(index) {
+    let data = history[index];
+    document.getElementById("empName").value = data.name;
+    document.getElementById("fromDate").value = data.from;
+    document.getElementById("toDate").value = data.to;
+    records = data.records;
+    
+    // Redraw table
+    let table = document.getElementById("tableBody");
+    table.innerHTML = "";
+    records.forEach(item => {
+        let row = table.insertRow();
+        row.innerHTML = `
+            <td>${item.date}</td>
+            <td>${item.timein}</td>
+            <td>${item.timeout}</td>
+            <td>${item.totalHrs}</td>
+            <td style="color:orange;">${item.workHrs}</td>
+            <td>${item.regHrs}</td>
+            <td style="color:blue;">${item.otHrs}</td>
+            <td style="color:purple;">${item.nsdHrs}</td>
+            <td>${item.regPay}</td>
+            <td>${item.otPay}</td>
+            <td>${item.nsdPay}</td>
+            <td style="font-weight:bold; color:green;">${item.dailyGross}</td>
+        `;
+    });
+    updateSummary();
+    showPage('main');
 }
 
-function closePayslip() {
-    document.getElementById('payslipArea').style.display = 'none';
-}
-
-function printPayslip() {
-    window.print();
-}
-
-function clearAll() {
-    if(confirm("⚠️ WIPE ALL CURRENT DATA?")) {
-        tableData = [];
-        document.getElementById('tableBody').innerHTML = '';
-        document.getElementById('grossPay').innerText = '0.00';
-        updateDeductions();
+function deleteHistory(index) {
+    if(confirm("Delete this record?")) {
+        history.splice(index, 1);
+        localStorage.setItem("payrollHistory", JSON.stringify(history));
+        loadHistory();
     }
 }
 
-// Initialize
-window.onload = function() {
-    showPage('main');
-};
+function generatePayslip() {
+    let name = document.getElementById("empName").value || "Employee";
+    let f = document.getElementById("fromDate").value;
+    let t = document.getElementById("toDate").value;
+    let period = (f && t) ? (f + " to " + t) : "Whole Month";
+
+    let gross = document.getElementById("grossPay").innerText;
+    let sss = document.getElementById("sss").innerText;
+    let phil = document.getElementById("philhealth").innerText;
+    let pag = document.getElementById("pagibig").innerText;
+    let net = document.getElementById("netPay").innerText;
+
+    let totalDed = parseFloat(sss) + parseFloat(phil) + parseFloat(pag);
+
+    document.getElementById("printName").innerText = name;
+    document.getElementById("printPeriod").innerText = period;
+    document.getElementById("pReg").innerText = document.getElementById("sumRegHrs").innerText + " HRS";
+    document.getElementById("pOt").innerText = document.getElementById("sumOtHrs").innerText + " HRS";
+    document.getElementById("pNsd").innerText = document.getElementById("sumNsdHrs").innerText + " HRS";
+    document.getElementById("pGross").innerText = "₱ " + gross;
+    document.getElementById("pSss").innerText = "₱ " + sss;
+    document.getElementById("pPhil").innerText = "₱ " + phil;
+    document.getElementById("pPag").innerText = "₱ " + pag;
+    document.getElementById("pDeduct").innerText = "₱ " + totalDed.toFixed(2);
+    document.getElementById("pNet").innerText = "₱ " + net;
+
+    document.getElementById("payslipArea").style.display = "block";
+    window.scrollTo(0, document.body.scrollHeight);
+}
+
+function clearAll() {
+    document.getElementById("tableBody").innerHTML = "";
+    records = [];
+    updateSummary();
+}
 </script>
 
 </body>
