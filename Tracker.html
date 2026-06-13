@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>MoODyMadz E-Shop</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #0A1A3F;
+            color: #ffffff;
+            padding-bottom: 20px;
+            line-height: 1.4;
+        }
+        .header {
+            background-color: #0F2454;
+            border-bottom: 2px solid #FFCC00;
+            padding: 12px 8px;
+            text-align: center;
+        }
+        .header h1 {
+            color: #FFCC00;
+            font-size: clamp(20px, 6vw, 26px);
+            margin-bottom: 4px;
+        }
+        .header p {
+            color: #dddddd;
+            font-size: clamp(13px, 3.5vw, 15px);
+        }
+        .container {
+            margin: 12px 8px;
+        }
+        .form-card {
+            background-color: #0F2454;
+            border: 2px solid #1A3772;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .form-card h2 {
+            color: #FFCC00;
+            font-size: clamp(16px, 4.5vw, 19px);
+            margin-bottom: 14px;
+        }
+        .row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin-bottom: 14px;
+        }
+        @media (min-width: 480px) {
+            .row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+        .full-row {
+            margin-bottom: 14px;
+        }
+        label {
+            display: block;
+            color: #FFCC00;
+            font-size: clamp(13px, 3.5vw, 15px);
+            margin-bottom: 4px;
+        }
+        .input-group {
+            position: relative;
+        }
+        .input-group span {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #ffffff;
+            font-size: 16px;
+            z-index: 1;
+        }
+        input, select {
+            width: 100%;
+            background-color: #0A1A3F;
+            border: 1px solid #1A3772;
+            border-radius: 4px;
+            padding: 10px 8px;
+            padding-left: 26px;
+            color: #ffffff;
+            font-size: clamp(14px, 3.8vw, 16px);
+        }
+        input:focus, select:focus {
+            outline: none;
+            border-color: #FFCC00;
+        }
+        .btn-add {
+            width: 100%;
+            background-color: #FFCC00;
+            color: #0A1A3F;
+            font-weight: bold;
+            font-size: clamp(16px, 4.5vw, 18px);
+            border: none;
+            border-radius: 4px;
+            padding: 12px;
+            cursor: pointer;
+        }
+        .btn-add:hover {
+            background-color: #F9B800;
+        }
+        .hidden {
+            display: none;
+        }
+        .history-card {
+            margin-top: 18px;
+            background-color: #0F2454;
+            border: 2px solid #1A3772;
+            border-radius: 6px;
+            padding: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
+        .history-card h2 {
+            color: #FFCC00;
+            font-size: clamp(16px, 4.5vw, 19px);
+            margin-bottom: 14px;
+        }
+        .totals {
+            background-color: #0A1A3F;
+            border: 1px solid #FFCC00;
+            border-radius: 4px;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 8px;
+            margin-bottom: 14px;
+            text-align: center;
+            font-size: clamp(14px, 3.8vw, 16px);
+        }
+        @media (min-width: 480px) {
+            .totals {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+        .profit {
+            color: #4ade80;
+            font-weight: bold;
+        }
+        .text-red-400 {
+            color: #ff6666;
+        }
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        table {
+            width: 100%;
+            min-width: 600px;
+            border-collapse: collapse;
+            font-size: clamp(13px, 3.5vw, 15px);
+        }
+        th {
+            background-color: #1A3772;
+            color: #FFCC00;
+            text-align: left;
+            padding: 10px 8px;
+            border-bottom: 1px solid #FFCC00;
+            white-space: nowrap;
+        }
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #1A3772;
+            white-space: nowrap;
+        }
+        tr:hover {
+            background-color: #132859;
+        }
+        .btn-delete {
+            color: #ff6666;
+            background: none;
+            border: none;
+            font-size: 18px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">
+        <h1>MoODyMadz E-Shop</h1>
+        <p>Binance System - Business Tracker</p>
+    </div>
+
+    <div class="container">
+        <div class="form-card">
+            <h2>➕ Add New Transaction</h2>
+
+            <div class="row">
+                <div>
+                    <label>Date</label>
+                    <input type="date" id="date" required>
+                </div>
+                <div>
+                    <button type="button" onclick="addEntry()" class="btn-add">ADD</button>
+                </div>
+            </div>
+
+            <div class="full-row">
+                <label>Resources / Bot</label>
+                <select id="type" required>
+                    <option value="">-- Select Category --</option>
+                    <option value="RSS">RSS KD 1-1992 Available ⚡</option>
+                    <option value="Gems">Gems (Price per 100K)</option>
+                    <option value="Bot">Bot Package</option>
+                </select>
+            </div>
+
+            <!-- RSS List -->
+            <div id="rssDiv" class="hidden full-row">
+                <label>Select RSS</label>
+                <select id="rssPackage">
+                    <option value="">-- Choose RSS --</option>
+                    <option value="4B Food">4B Food</option>
+                    <option value="44440">44440</option>
+                    <option value="44441">44441</option>
+                    <option value="44442">44442</option>
+                    <option value="44443">44443</option>
+                    <option value="44444">44444 (Full Bank)</option>
+                </select>
+            </div>
+
+            <!-- Gems List -->
+            <div id="gemsDiv" class="hidden full-row">
+                <label>Select Gems Tier</label>
+                <select id="gemsPackage">
+                    <option value="">-- Choose Gems --</option>
+                    <option value="0 – 390M">0 – 390M</option>
+                    <option value="391M – 790M">391M – 790M</option>
+                    <option value="791M – 1090M">791M – 1090M</option>
+                    <option value="1091M – 1390M">1091M – 1390M</option>
+                    <option value="1391M – 1790M">1391M – 1790M</option>
+                    <option value="1791M – 2490M">1791M – 2490M</option>
+                </select>
+            </div>
+
+            <!-- Bot List -->
+            <div id="botDiv" class="hidden full-row">
+                <label>Select Bot Package</label>
+                <select id="botPackage">
+                    <option value="">-- Choose Bot --</option>
+                    <option value="1 Month">1 Month</option>
+                    <option value="5+1 Months">5+1 Months</option>
+                </select>
+            </div>
+
+            <div class="row">
+                <div>
+                    <label>Buy Price (Supplier USD)</label>
+                    <div class="input-group">
+                        <span>$</span>
+                        <input type="number" step="0.01" id="buyPrice" placeholder="e.g. 1.00" required>
+                    </div>
+                </div>
+                <div>
+                    <label>Sell Price (PHP)</label>
+                    <input type="number" step="0.01" id="inPrice" placeholder="Auto-filled" required>
+                </div>
+            </div>
+        </div>
+
+        <div class="history-card">
+            <h2>📋 Transaction History</h2>
+            <div class="totals">
+                <span>Total Cost: <strong>$<span id="totalBuy">0.00</span></strong></span>
+                <span>Total Sales: <strong>₱<span id="totalIn">0.00</span></strong></span>
+                <span class="profit">Total Profit: <strong>₱<span id="totalProfit">0.00</span></strong></span>
+            </div>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Item / Package</th>
+                            <th>Cost (USD)</th>
+                            <th>Sell (PHP)</th>
+                            <th>Profit (PHP)</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="entriesBody"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const EXCHANGE_RATE = 62; // 1 USD = 62 PHP
+
+        // Show/hide sections
+        document.getElementById('type').addEventListener('change', function() {
+            document.getElementById('rssDiv').classList.add('hidden');
+            document.getElementById('gemsDiv').classList.add('hidden');
+            document.getElementById('botDiv').classList.add('hidden');
+
+            if(this.value === 'RSS') document.getElementById('rssDiv').classList.remove('hidden');
+            if(this.value === 'Gems') document.getElementById('gemsDiv').classList.remove('hidden');
+            if(this.value === 'Bot') document.getElementById('botDiv').classList.remove('hidden');
+
+            document.getElementById('rssPackage').value = '';
+            document.getElementById('gemsPackage').value = '';
+            document.getElementById('botPackage').value = '';
+            document.getElementById('buyPrice').value = '';
+            document.getElementById('inPrice').value = '';
+        });
+
+        // Auto-fill Sell Price
+        document.getElementById('rssPackage').addEventListener('change', function() {
+            const prices = {
+                '4B Food': 40,
+                '44440': 70,
+                '44441': 75,
+                '44442': 80,
+                '44443': 85,
+                '44444': 90
+            };
+            document.getElementById('inPrice').value = prices[this.value] || '';
+        });
+
+        document.getElementById('gemsPackage').addEventListener('change', function() {
+            const prices = {
+                '0 – 390M': 275,
+                '391M – 790M': 285,
+                '791M – 1090M': 295,
+                '1091M – 1390M': 305,
+                '1391M – 1790M': 315,
+                '1791M – 2490M': 325
+            };
+            document.getElementById('inPrice').value = prices[this.value] || '';
+        });
+
+        document.getElementById('botPackage').addEventListener('change', function() {
+            const prices = {
+                '1 Month': 150,
+                '5+1 Months': 750
+            };
+            document.getElementById('inPrice').value = prices[this.value] || '';
+        });
+
+        function addEntry() {
+            const date = document.getElementById('date').value;
+            const type = document.getElementById('type').value;
+            const buyUSD = Number(document.getElementById('buyPrice').value);
+            const sellPHP = Number(document.getElementById('inPrice').value);
+
+            if(!date || !type || isNaN(buyUSD) || buyUSD <= 0 || isNaN(sellPHP) || sellPHP <= 0) {
+                alert('Please fill all fields correctly!');
+                return;
+            }
+
+            const costPHP = buyUSD * EXCHANGE_RATE;
+            const profitPHP = sellPHP - costPHP;
+
+            let itemName = '';
+            if(type === 'RSS') {
+                itemName = document.getElementById('rssPackage').value;
+                if(!itemName) return alert('Select RSS package!');
+            } else if(type === 'Gems') {
+                itemName = document.getElementById('gemsPackage').value;
+                if(!itemName) return alert('Select Gems tier!');
+            } else if(type === 'Bot') {
+                itemName = document.getElementById('botPackage').value;
+                if(!itemName) return alert('Select Bot package!');
+            }
+
+            const entries = JSON.parse(localStorage.getItem('moodyTracker')) || [];
+            entries.push({ date, item: itemName, buyUSD, sellPHP, profitPHP });
+            localStorage.setItem('moodyTracker', JSON.stringify(entries));
+
+            document.getElementById('type').value = '';
+            document.getElementById('rssDiv').classList.add('hidden');
+            document.getElementById('gemsDiv').classList.add('hidden');
+            document.getElementById('botDiv').classList.add('hidden');
+            document.getElementById('buyPrice').value = '';
+            document.getElementById('inPrice').value = '';
+
+            loadEntries();
+            alert('✅ Entry saved!');
+        }
+
+        function loadEntries() {
+            const entries = JSON.parse(localStorage.getItem('moodyTracker')) || [];
+            
+            // ✅ AUTO SORT: NEWEST DATE FIRST
+            entries.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+            const body = document.getElementById('entriesBody');
+            body.innerHTML = '';
+            let totalBuyUSD = 0, totalSellPHP = 0, totalProfitPHP = 0;
+
+            entries.forEach((entry, idx) => {
+                const buyVal = Number(entry.buyUSD) || 0;
+                const sellVal = Number(entry.sellPHP) || 0;
+                const profitVal = Number(entry.profitPHP) || 0;
+
+                totalBuyUSD += buyVal;
+                totalSellPHP += sellVal;
+                totalProfitPHP += profitVal;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${entry.date}</td>
+                    <td>${entry.item}</td>
+                    <td>$${buyVal.toFixed(2)}</td>
+                    <td>₱${sellVal.toFixed(2)}</td>
+                    <td class="${profitVal >= 0 ? 'profit' : 'text-red-400'}">₱${profitVal.toFixed(2)}</td>
+                    <td><button onclick="delEntry(${idx})" class="btn-delete">🗑️</button></td>
+                `;
+                body.appendChild(row);
+            });
+
+            document.getElementById('totalBuy').textContent = totalBuyUSD.toFixed(2);
+            document.getElementById('totalIn').textContent = totalSellPHP.toFixed(2);
+            document.getElementById('totalProfit').textContent = totalProfitPHP.toFixed(2);
+        }
+
+        function delEntry(idx) {
+            if(!confirm('Delete this entry?')) return;
+            const entries = JSON.parse(localStorage.getItem('moodyTracker')) || [];
+            entries.splice(idx, 1);
+            localStorage.setItem('moodyTracker', JSON.stringify(entries));
+            loadEntries();
+        }
+
+        window.onload = () => {
+            document.getElementById('date').value = new Date().toISOString().split('T')[0];
+            loadEntries();
+        };
+    </script>
+
+</body>
+</html>
